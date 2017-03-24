@@ -4,27 +4,27 @@ namespace app\modules\v1\controllers;
 
 use yii\rest\ActiveController;
 
-class TestController extends ActiveController
+class ClasificacionController extends ActiveController
 {
-	public $modelClass = 'app\modules\v1\models\test';
+	public $modelClass = 'app\modules\v1\models\Clasificacion';
 
-	public function behaviors()
-	{
-		return \yii\helpers\ArrayHelper::merge(parent::behaviors(),[
-			'authenticator'=>[
-				'class' => \yii\filters\auth\HttpBearerAuth::className()  
-			],
-			'authorization'=>[
-				'class' => \app\components\Authorization::className(),
-			],
-			// 'verbs'=>[           
-			// 	'class' => \yii\filters\VerbFilter::className(),
-			// 	'actions' => [
-			// 		'search'  => ['get'],
-			// 	],
-			// ],
-		]);
-	}
+	// public function behaviors()
+	// {
+	// 	return \yii\helpers\ArrayHelper::merge(parent::behaviors(),[
+	// 		'authenticator'=>[
+	// 			'class' => \yii\filters\auth\HttpBearerAuth::className()  
+	// 		],
+	// 		'authorization'=>[
+	// 			'class' => \app\components\Authorization::className(),
+	// 		],
+	// 		// 'verbs'=>[           
+	// 		// 	'class' => \yii\filters\VerbFilter::className(),
+	// 		// 	'actions' => [
+	// 		// 		'search'  => ['get'],
+	// 		// 	],
+	// 		// ],
+	// 	]);
+	// }
 
 	public function actionSearch()
 	{
