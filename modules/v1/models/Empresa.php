@@ -78,65 +78,45 @@ class Empresa extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
+    public function extraFields(){
+        return ['sucursal'];
+    }
+
     public function getCom()
     {
         return $this->hasOne(Comuna::className(), ['com_id' => 'com_id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getPais()
     {
         return $this->hasOne(Pais::className(), ['id' => 'pais_id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getEmpresaClasificacions()
     {
         return $this->hasMany(EmpresaClasificacion::className(), ['emp_id' => 'id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getEmpresaSucursals()
+    public function getSucursal()
     {
         return $this->hasMany(EmpresaSucursal::className(), ['emp_id' => 'id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getEmpresaUsers()
     {
         return $this->hasMany(EmpresaUser::className(), ['emp_id' => 'id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getUsus()
     {
         return $this->hasMany(User::className(), ['id' => 'usu_id'])->viaTable('empresa_user', ['emp_id' => 'id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getOrdenTrabajos()
     {
         return $this->hasMany(OrdenTrabajo::className(), ['emp_id' => 'id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getTrabajadorExperiencias()
     {
         return $this->hasMany(TrabajadorExperiencia::className(), ['emp_id' => 'id']);
