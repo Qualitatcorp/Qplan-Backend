@@ -71,4 +71,8 @@ class OrdentrabajoController extends ActiveController
 			throw new \yii\web\HttpException(400, 'No se puede crear una query a partir de la informacion propuesta.');
 		}
 	}
+
+	public function actionFind(){
+		
+	}
 }

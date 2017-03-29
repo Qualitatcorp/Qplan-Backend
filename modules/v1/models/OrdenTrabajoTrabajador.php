@@ -50,6 +50,10 @@ class OrdenTrabajoTrabajador extends \yii\db\ActiveRecord
         ];
     }
 
+    public function extraFields(){
+        return ['ot'];
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */

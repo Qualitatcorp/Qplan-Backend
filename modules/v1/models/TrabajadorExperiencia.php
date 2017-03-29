@@ -24,17 +24,11 @@ use Yii;
  */
 class TrabajadorExperiencia extends \yii\db\ActiveRecord
 {
-    /**
-     * @inheritdoc
-     */
     public static function tableName()
     {
         return 'trabajador_experiencia';
     }
 
-    /**
-     * @inheritdoc
-     */
     public function rules()
     {
         return [
@@ -50,9 +44,6 @@ class TrabajadorExperiencia extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
     public function attributeLabels()
     {
         return [
@@ -68,34 +59,22 @@ class TrabajadorExperiencia extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getTra()
+    public function getTrabajador()
     {
         return $this->hasOne(Trabajador::className(), ['id' => 'tra_id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getEsp()
+    public function getEspecialidad()
     {
         return $this->hasOne(Especialidad::className(), ['id' => 'esp_id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getEmp()
+    public function getEmpresa()
     {
         return $this->hasOne(Empresa::className(), ['id' => 'emp_id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getSuc()
+    public function getSucursal()
     {
         return $this->hasOne(EmpresaSucursal::className(), ['id' => 'suc_id']);
     }

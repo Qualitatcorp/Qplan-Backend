@@ -98,50 +98,68 @@ class Trabajador extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
+    public function fields(){
+        return [
+            'rut',
+            'nombre',
+            'paterno',
+            'materno',
+            'nacimiento',
+            'fono',
+            'mail',
+            'gerencia',
+            'antiguedad',
+            'civil',
+            'hijos',
+            'licencia',
+            'talla',
+            'direccion',
+            'contacto',
+            'afp',
+            'prevision',
+            'nivel',
+            'creacion',
+            'modificacion'
+        ];
+    }
+
+    public function extraFields(){
+        return ['ot','ots','comuna','experiencias'];
+    }
+
     public function getFichas()
     {
         return $this->hasMany(Ficha::className(), ['tra_id' => 'id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getOts()
-    {
-        return $this->hasMany(OrdenTrabajo::className(), ['id' => 'ot_id'])->viaTable('ficha', ['tra_id' => 'id']);
-    }
+    // public function getOt()
+    // {
+    //     return $this->hasMany(OrdenTrabajo::className(), ['id' => 'ot_id'])->viaTable('ficha', ['tra_id' => 'id']);
+    // }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getOrdenTrabajoTrabajadors()
     {
         return $this->hasMany(OrdenTrabajoTrabajador::className(), ['tra_id' => 'id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getOts0()
+    public function getOts()
     {
         return $this->hasMany(OrdenTrabajo::className(), ['id' => 'ot_id'])->viaTable('orden_trabajo_trabajador', ['tra_id' => 'id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getCom()
+    public function getOt()
+    {
+        return $this->hasMany(OrdenTrabajo::className(), ['id' => 'ot_id'])
+        ->where("estado<>'CERRADO'")
+        ->viaTable('orden_trabajo_trabajador', ['tra_id' => 'id']);
+    }
+
+    public function getComuna()
     {
         return $this->hasOne(Comuna::className(), ['com_id' => 'com_id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getTrabajadorExperiencias()
+    public function getExperiencias()
     {
         return $this->hasMany(TrabajadorExperiencia::className(), ['tra_id' => 'id']);
     }
