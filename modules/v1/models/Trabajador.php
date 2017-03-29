@@ -100,7 +100,9 @@ class Trabajador extends \yii\db\ActiveRecord
 
     public function fields(){
         return [
+            'id',
             'rut',
+            'comuna',
             'nombre',
             'paterno',
             'materno',
