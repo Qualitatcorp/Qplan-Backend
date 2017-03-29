@@ -51,7 +51,7 @@ class ComunaController extends ActiveController
 					'query' => $query,
 					'sort' => [
 						'defaultOrder' => [
-							'id'=> SORT_DESC
+							'nombre'=> SORT_DESC
 						]
 					],
 				  	'pagination' => [
