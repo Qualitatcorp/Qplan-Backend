@@ -8,12 +8,12 @@ use Yii;
  * This is the model class for table "ficha_respuesta".
  *
  * @property string $id
- * @property string $fide_id
+ * @property string $fict_id
  * @property string $alt_id
  * @property string $creado
  *
- * @property FichaItem $fide
  * @property EvaluacionAlternativa $alt
+ * @property FichaTeorico $fict
  */
 class FichaRespuesta extends \yii\db\ActiveRecord
 {
@@ -31,12 +31,11 @@ class FichaRespuesta extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['fide_id', 'alt_id'], 'required'],
-            [['fide_id', 'alt_id'], 'integer'],
+            [['fict_id', 'alt_id'], 'required'],
+            [['fict_id', 'alt_id'], 'integer'],
             [['creado'], 'safe'],
-            [['fide_id', 'alt_id'], 'unique', 'targetAttribute' => ['fide_id', 'alt_id'], 'message' => 'The combination of Fide ID and Alt ID has already been taken.'],
-            [['fide_id'], 'exist', 'skipOnError' => true, 'targetClass' => FichaItem::className(), 'targetAttribute' => ['fide_id' => 'id']],
             [['alt_id'], 'exist', 'skipOnError' => true, 'targetClass' => EvaluacionAlternativa::className(), 'targetAttribute' => ['alt_id' => 'id']],
+            [['fict_id'], 'exist', 'skipOnError' => true, 'targetClass' => FichaTeorico::className(), 'targetAttribute' => ['fict_id' => 'id']],
         ];
     }
 
@@ -47,7 +46,7 @@ class FichaRespuesta extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'fide_id' => 'Fide ID',
+            'fict_id' => 'Fict ID',
             'alt_id' => 'Alt ID',
             'creado' => 'Creado',
         ];
@@ -56,16 +55,16 @@ class FichaRespuesta extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getFide()
+    public function getAlt()
     {
-        return $this->hasOne(FichaItem::className(), ['id' => 'fide_id']);
+        return $this->hasOne(EvaluacionAlternativa::className(), ['id' => 'alt_id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getAlt()
+    public function getFict()
     {
-        return $this->hasOne(EvaluacionAlternativa::className(), ['id' => 'alt_id']);
+        return $this->hasOne(FichaTeorico::className(), ['id' => 'fict_id']);
     }
 }

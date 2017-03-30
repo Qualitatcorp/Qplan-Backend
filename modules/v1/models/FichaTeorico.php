@@ -12,8 +12,7 @@ use Yii;
  * @property string $fic_id
  * @property string $nota
  *
- * @property FichaItem[] $fichaItems
- * @property EvaluacionItem[] $ites
+ * @property FichaRespuesta[] $fichaRespuestas
  */
 class FichaTeorico extends \yii\db\ActiveRecord
 {
@@ -53,16 +52,8 @@ class FichaTeorico extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getFichaItems()
+    public function getFichaRespuestas()
     {
-        return $this->hasMany(FichaItem::className(), ['teo_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getItes()
-    {
-        return $this->hasMany(EvaluacionItem::className(), ['id' => 'ite_id'])->viaTable('ficha_item', ['teo_id' => 'id']);
+        return $this->hasMany(FichaRespuesta::className(), ['fict_id' => 'id']);
     }
 }

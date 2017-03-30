@@ -15,6 +15,7 @@ use Yii;
  * @property ClasificacionPerfil[] $clasificacionPerfils
  * @property Clasificacion[] $clas
  * @property EmpresaClasificacion[] $empresaClasificacions
+ * @property OrdenTrabajo[] $ordenTrabajos
  * @property PerfilEspecialidad[] $perfilEspecialidads
  * @property Especialidad[] $esps
  * @property PerfilModulo[] $perfilModulos
@@ -76,6 +77,14 @@ class Perfil extends \yii\db\ActiveRecord
     public function getEmpresaClasificacions()
     {
         return $this->hasMany(EmpresaClasificacion::className(), ['per_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOrdenTrabajos()
+    {
+        return $this->hasMany(OrdenTrabajo::className(), ['per_id' => 'id']);
     }
 
     /**

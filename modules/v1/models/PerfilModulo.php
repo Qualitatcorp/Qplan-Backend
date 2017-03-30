@@ -9,7 +9,10 @@ use Yii;
  *
  * @property string $id
  * @property string $per_id
+ * @property string $nombre
+ * @property string $nivel
  * @property string $evaluacion
+ * @property double $ponderacion
  *
  * @property FichaPractica[] $fichaPracticas
  * @property Ficha[] $fics
@@ -33,9 +36,11 @@ class PerfilModulo extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['per_id', 'evaluacion'], 'required'],
+            [['per_id', 'nombre', 'evaluacion'], 'required'],
             [['per_id'], 'integer'],
-            [['evaluacion'], 'string'],
+            [['nivel', 'evaluacion'], 'string'],
+            [['ponderacion'], 'number'],
+            [['nombre'], 'string', 'max' => 256],
             [['per_id'], 'exist', 'skipOnError' => true, 'targetClass' => Perfil::className(), 'targetAttribute' => ['per_id' => 'id']],
         ];
     }
@@ -48,7 +53,10 @@ class PerfilModulo extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'per_id' => 'Per ID',
+            'nombre' => 'Nombre',
+            'nivel' => 'Nivel',
             'evaluacion' => 'Evaluacion',
+            'ponderacion' => 'Ponderacion',
         ];
     }
 

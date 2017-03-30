@@ -5,17 +5,19 @@ namespace app\modules\v1\models;
 use Yii;
 
 /**
- * This is the model class for table "evaluacion_alternativa".
+ * This is the model class for table "evaluacion_pregunta".
  *
  * @property string $id
- * @property string $pre_id
- * @property integer $altenativa
- * @property double $poderacion
- * @property string $correcta
+ * @property string $eva_id
+ * @property string $pregunta
+ * @property string $comentario
+ * @property string $creado
+ * @property string $modificado
+ * @property string $habilitado
  *
- * @property EvaluacionPregunta $pre
- * @property FichaRespuesta[] $fichaRespuestas
- * @property FichaItem[] $fides
+ * @property EvaluacionAlternativa[] $evaluacionAlternativas
+ * @property EvaluacionTeorica $eva
+ * @property Recursos $recursos
  */
 class EvaluacionAlternativa extends \yii\db\ActiveRecord
 {
@@ -24,7 +26,7 @@ class EvaluacionAlternativa extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'evaluacion_alternativa';
+        return 'evaluacion_pregunta';
     }
 
     /**
@@ -33,11 +35,11 @@ class EvaluacionAlternativa extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['pre_id', 'altenativa'], 'required'],
-            [['pre_id', 'altenativa'], 'integer'],
-            [['poderacion'], 'number'],
-            [['correcta'], 'string'],
-            [['pre_id'], 'exist', 'skipOnError' => true, 'targetClass' => EvaluacionPregunta::className(), 'targetAttribute' => ['pre_id' => 'id']],
+            [['eva_id', 'pregunta'], 'required'],
+            [['eva_id'], 'integer'],
+            [['pregunta', 'comentario', 'habilitado'], 'string'],
+            [['creado', 'modificado'], 'safe'],
+            [['eva_id'], 'exist', 'skipOnError' => true, 'targetClass' => EvaluacionTeorica::className(), 'targetAttribute' => ['eva_id' => 'id']],
         ];
     }
 
@@ -48,34 +50,36 @@ class EvaluacionAlternativa extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'pre_id' => 'Pre ID',
-            'altenativa' => 'Altenativa',
-            'poderacion' => 'Poderacion',
-            'correcta' => 'Correcta',
+            'eva_id' => 'Eva ID',
+            'pregunta' => 'Pregunta',
+            'comentario' => 'Comentario',
+            'creado' => 'Creado',
+            'modificado' => 'Modificado',
+            'habilitado' => 'Habilitado',
         ];
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getPre()
+    public function getEvaluacionAlternativas()
     {
-        return $this->hasOne(EvaluacionPregunta::className(), ['id' => 'pre_id']);
+        return $this->hasMany(EvaluacionAlternativa::className(), ['pre_id' => 'id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getFichaRespuestas()
+    public function getEva()
     {
-        return $this->hasMany(FichaRespuesta::className(), ['alt_id' => 'id']);
+        return $this->hasOne(EvaluacionTeorica::className(), ['id' => 'eva_id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getFides()
+    public function getRecursos()
     {
-        return $this->hasMany(FichaItem::className(), ['id' => 'fide_id'])->viaTable('ficha_respuesta', ['alt_id' => 'id']);
+        return $this->hasOne(Recursos::className(), ['pre_id' => 'id']);
     }
 }

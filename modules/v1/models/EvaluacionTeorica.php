@@ -5,17 +5,19 @@ namespace app\modules\v1\models;
 use Yii;
 
 /**
- * This is the model class for table "evaluacion_teorica".
+ * This is the model class for table "evaluacion_pregunta".
  *
  * @property string $id
- * @property integer $tev_id
- * @property string $nombre
- * @property string $descripcion
+ * @property string $eva_id
+ * @property string $pregunta
+ * @property string $comentario
+ * @property string $creado
+ * @property string $modificado
+ * @property string $habilitado
  *
- * @property EvaluacionItem[] $evaluacionItems
- * @property EvaluacionTipo $tev
- * @property PerfilEvaluacionTeorica[] $perfilEvaluacionTeoricas
- * @property PerfilModulo[] $mops
+ * @property EvaluacionAlternativa[] $evaluacionAlternativas
+ * @property EvaluacionTeorica $eva
+ * @property Recursos $recursos
  */
 class EvaluacionTeorica extends \yii\db\ActiveRecord
 {
@@ -24,7 +26,7 @@ class EvaluacionTeorica extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'evaluacion_teorica';
+        return 'evaluacion_pregunta';
     }
 
     /**
@@ -33,11 +35,11 @@ class EvaluacionTeorica extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['tev_id', 'nombre'], 'required'],
-            [['tev_id'], 'integer'],
-            [['descripcion'], 'string'],
-            [['nombre'], 'string', 'max' => 256],
-            [['tev_id'], 'exist', 'skipOnError' => true, 'targetClass' => EvaluacionTipo::className(), 'targetAttribute' => ['tev_id' => 'id']],
+            [['eva_id', 'pregunta'], 'required'],
+            [['eva_id'], 'integer'],
+            [['pregunta', 'comentario', 'habilitado'], 'string'],
+            [['creado', 'modificado'], 'safe'],
+            [['eva_id'], 'exist', 'skipOnError' => true, 'targetClass' => EvaluacionTeorica::className(), 'targetAttribute' => ['eva_id' => 'id']],
         ];
     }
 
@@ -48,41 +50,36 @@ class EvaluacionTeorica extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'tev_id' => 'Tev ID',
-            'nombre' => 'Nombre',
-            'descripcion' => 'Descripcion',
+            'eva_id' => 'Eva ID',
+            'pregunta' => 'Pregunta',
+            'comentario' => 'Comentario',
+            'creado' => 'Creado',
+            'modificado' => 'Modificado',
+            'habilitado' => 'Habilitado',
         ];
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getEvaluacionItems()
+    public function getEvaluacionAlternativas()
     {
-        return $this->hasMany(EvaluacionItem::className(), ['evt_id' => 'id']);
+        return $this->hasMany(EvaluacionAlternativa::className(), ['pre_id' => 'id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getTev()
+    public function getEva()
     {
-        return $this->hasOne(EvaluacionTipo::className(), ['id' => 'tev_id']);
+        return $this->hasOne(EvaluacionTeorica::className(), ['id' => 'eva_id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getPerfilEvaluacionTeoricas()
+    public function getRecursos()
     {
-        return $this->hasMany(PerfilEvaluacionTeorica::className(), ['evt_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getMops()
-    {
-        return $this->hasMany(PerfilModulo::className(), ['id' => 'mop_id'])->viaTable('perfil_evaluacion_teorica', ['evt_id' => 'id']);
+        return $this->hasOne(Recursos::className(), ['pre_id' => 'id']);
     }
 }

@@ -9,6 +9,7 @@ use Yii;
  *
  * @property string $id
  * @property integer $com_id
+ * @property integer $pais_id
  * @property string $rut
  * @property string $nombre
  * @property string $paterno
@@ -35,25 +36,20 @@ use Yii;
  * @property OrdenTrabajoTrabajador[] $ordenTrabajoTrabajadors
  * @property OrdenTrabajo[] $ots0
  * @property Comuna $com
+ * @property Pais $pais
  * @property TrabajadorExperiencia[] $trabajadorExperiencias
  */
 class Trabajador extends \yii\db\ActiveRecord
 {
-    /**
-     * @inheritdoc
-     */
     public static function tableName()
     {
         return 'trabajador';
     }
 
-    /**
-     * @inheritdoc
-     */
     public function rules()
     {
         return [
-            [['com_id', 'antiguedad', 'hijos'], 'integer'],
+            [['com_id', 'pais_id', 'antiguedad', 'hijos'], 'integer'],
             [['rut'], 'required'],
             [['nacimiento', 'creacion', 'modificacion'], 'safe'],
             [['civil', 'licencia', 'talla', 'direccion', 'afp', 'prevision', 'nivel'], 'string'],
@@ -64,17 +60,16 @@ class Trabajador extends \yii\db\ActiveRecord
             [['contacto'], 'string', 'max' => 256],
             [['rut'], 'unique'],
             [['com_id'], 'exist', 'skipOnError' => true, 'targetClass' => Comuna::className(), 'targetAttribute' => ['com_id' => 'com_id']],
+            [['pais_id'], 'exist', 'skipOnError' => true, 'targetClass' => Pais::className(), 'targetAttribute' => ['pais_id' => 'id']],
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
     public function attributeLabels()
     {
         return [
             'id' => 'ID',
             'com_id' => 'Com ID',
+            'pais_id' => 'Pais ID',
             'rut' => 'Rut',
             'nombre' => 'Nombre',
             'paterno' => 'Paterno',
@@ -102,6 +97,7 @@ class Trabajador extends \yii\db\ActiveRecord
         return [
             'id',
             'rut',
+            'pais',
             'comuna',
             'nombre',
             'paterno',
@@ -126,7 +122,7 @@ class Trabajador extends \yii\db\ActiveRecord
     }
 
     public function extraFields(){
-        return ['ot','ots','comuna','experiencias'];
+        return ['ot','ots','comuna','pais','experiencias'];
     }
 
     public function getFichas()
@@ -134,14 +130,13 @@ class Trabajador extends \yii\db\ActiveRecord
         return $this->hasMany(Ficha::className(), ['tra_id' => 'id']);
     }
 
-    // public function getOt()
-    // {
-    //     return $this->hasMany(OrdenTrabajo::className(), ['id' => 'ot_id'])->viaTable('ficha', ['tra_id' => 'id']);
-    // }
-
-    public function getOrdenTrabajoTrabajadors()
+    
+    // Orden trabajador
+    public function getOt()
     {
-        return $this->hasMany(OrdenTrabajoTrabajador::className(), ['tra_id' => 'id']);
+        return $this->hasMany(OrdenTrabajo::className(), ['id' => 'ot_id'])
+            ->where("estado<>'CERRADO'")
+            ->viaTable('orden_trabajo_trabajador', ['tra_id' => 'id']);
     }
 
     public function getOts()
@@ -149,16 +144,24 @@ class Trabajador extends \yii\db\ActiveRecord
         return $this->hasMany(OrdenTrabajo::className(), ['id' => 'ot_id'])->viaTable('orden_trabajo_trabajador', ['tra_id' => 'id']);
     }
 
-    public function getOt()
-    {
-        return $this->hasMany(OrdenTrabajo::className(), ['id' => 'ot_id'])
-        ->where("estado<>'CERRADO'")
-        ->viaTable('orden_trabajo_trabajador', ['tra_id' => 'id']);
-    }
+    // public function getOts()
+    // {
+    //     return $this->hasMany(OrdenTrabajo::className(), ['id' => 'ot_id'])->viaTable('ficha', ['tra_id' => 'id']);
+    // }
+
+    // public function getOrdenTrabajoTrabajadors()
+    // {
+    //     return $this->hasMany(OrdenTrabajoTrabajador::className(), ['tra_id' => 'id']);
+    // }
 
     public function getComuna()
     {
         return $this->hasOne(Comuna::className(), ['com_id' => 'com_id']);
+    }
+
+    public function getPais()
+    {
+        return $this->hasOne(Pais::className(), ['id' => 'pais_id']);
     }
 
     public function getExperiencias()
