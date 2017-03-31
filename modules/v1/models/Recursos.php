@@ -4,32 +4,14 @@ namespace app\modules\v1\models;
 
 use Yii;
 
-/**
- * This is the model class for table "recursos".
- *
- * @property string $id
- * @property string $pre_id
- * @property string $tipo
- *
- * @property EvaluacionPregunta $pre
- * @property RecursosHasOptions[] $recursosHasOptions
- * @property RecursosOptions[] $opts
- * @property RecursosHasSources[] $recursosHasSources
- * @property RecursosSources[] $srcs
- */
 class Recursos extends \yii\db\ActiveRecord
 {
-    /**
-     * @inheritdoc
-     */
+
     public static function tableName()
     {
         return 'recursos';
     }
 
-    /**
-     * @inheritdoc
-     */
     public function rules()
     {
         return [
@@ -41,9 +23,6 @@ class Recursos extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
     public function attributeLabels()
     {
         return [
@@ -53,42 +32,47 @@ class Recursos extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getPre()
+    public function fields()
+    {
+        $fields = parent::fields();
+        array_push($fields,'option','sources');
+        return $fields;
+    }
+
+
+    public function getPregunta()
     {
         return $this->hasOne(EvaluacionPregunta::className(), ['id' => 'pre_id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getRecursosHasOptions()
-    {
-        return $this->hasMany(RecursosHasOptions::className(), ['rec_id' => 'id']);
-    }
+    // public function getRecursosHasOptions()
+    // {
+    //     return $this->hasMany(RecursosHasOptions::className(), ['rec_id' => 'id']);
+    // }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getOpts()
+    public function getOptions()
     {
         return $this->hasMany(RecursosOptions::className(), ['id' => 'opt_id'])->viaTable('recursos_has_options', ['rec_id' => 'id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getRecursosHasSources()
+    public function getOption()
     {
-        return $this->hasMany(RecursosHasSources::className(), ['rec_id' => 'id']);
+        $arrayOptions=[];
+        foreach ($this->options as $option) {
+           $key=$option->variable;
+           $value=$option->valor;
+           $type=$option->tipo;
+           $arrayOptions[$key]=(settype($value,$type))?$value:"error : " + $value + "tipo : " + $type;
+        }
+        return $arrayOptions;
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getSrcs()
+    // public function getRecursosHasSources()
+    // {
+    //     return $this->hasMany(RecursosHasSources::className(), ['rec_id' => 'id']);
+    // }
+
+    public function getSources()
     {
         return $this->hasMany(RecursosSources::className(), ['id' => 'src_id'])->viaTable('recursos_has_sources', ['rec_id' => 'id']);
     }

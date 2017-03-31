@@ -52,18 +52,17 @@ class RecursosSources extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getRecursosHasSources()
+    public function fields()
     {
-        return $this->hasMany(RecursosHasSources::className(), ['src_id' => 'id']);
+        return ['src','type','title'];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getRecs()
+    // public function getRecursosHasSources()
+    // {
+    //     return $this->hasMany(RecursosHasSources::className(), ['src_id' => 'id']);
+    // }
+
+    public function getRecursos()
     {
         return $this->hasMany(Recursos::className(), ['id' => 'rec_id'])->viaTable('recursos_has_sources', ['src_id' => 'id']);
     }

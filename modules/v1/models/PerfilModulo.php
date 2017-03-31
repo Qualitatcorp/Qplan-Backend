@@ -4,35 +4,14 @@ namespace app\modules\v1\models;
 
 use Yii;
 
-/**
- * This is the model class for table "perfil_modulo".
- *
- * @property string $id
- * @property string $per_id
- * @property string $nombre
- * @property string $nivel
- * @property string $evaluacion
- * @property double $ponderacion
- *
- * @property FichaPractica[] $fichaPracticas
- * @property Ficha[] $fics
- * @property PerfilEvaluacionTeorica[] $perfilEvaluacionTeoricas
- * @property EvaluacionTeorica[] $evts
- * @property Perfil $per
- */
 class PerfilModulo extends \yii\db\ActiveRecord
 {
-    /**
-     * @inheritdoc
-     */
+    
     public static function tableName()
     {
         return 'perfil_modulo';
     }
 
-    /**
-     * @inheritdoc
-     */
     public function rules()
     {
         return [
@@ -45,9 +24,6 @@ class PerfilModulo extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
     public function attributeLabels()
     {
         return [
@@ -60,42 +36,32 @@ class PerfilModulo extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
+    public function extraFields()
+    {
+        return ['evaluacionteorica','perfil','fichas'];
+    }
+
     public function getFichaPracticas()
     {
         return $this->hasMany(FichaPractica::className(), ['mod_id' => 'id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getFics()
+    public function getFichas()
     {
         return $this->hasMany(Ficha::className(), ['id' => 'fic_id'])->viaTable('ficha_practica', ['mod_id' => 'id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getPerfilEvaluacionTeoricas()
-    {
-        return $this->hasMany(PerfilEvaluacionTeorica::className(), ['mop_id' => 'id']);
-    }
+    // public function getPerfilEvaluacionTeoricas()
+    // {
+    //     return $this->hasMany(PerfilEvaluacionTeorica::className(), ['mop_id' => 'id']);
+    // }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getEvts()
+    public function getEvaluacionteorica()
     {
         return $this->hasMany(EvaluacionTeorica::className(), ['id' => 'evt_id'])->viaTable('perfil_evaluacion_teorica', ['mop_id' => 'id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getPer()
+    public function getPerfil()
     {
         return $this->hasOne(Perfil::className(), ['id' => 'per_id']);
     }

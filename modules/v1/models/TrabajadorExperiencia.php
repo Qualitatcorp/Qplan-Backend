@@ -64,26 +64,24 @@ class TrabajadorExperiencia extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getTra()
+    public function fields()
+    {
+        $fields = parent::fields();
+        array_push($fields, 'especialidad','sucursal');
+        return $fields;
+    }
+
+    public function getTrabajador()
     {
         return $this->hasOne(Trabajador::className(), ['id' => 'tra_id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getEsp()
+    public function getEspecialidad()
     {
         return $this->hasOne(Especialidad::className(), ['id' => 'esp_id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getSuc()
+    public function getSucursal()
     {
         return $this->hasOne(EmpresaSucursal::className(), ['id' => 'suc_id']);
     }

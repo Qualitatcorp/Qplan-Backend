@@ -4,29 +4,14 @@ namespace app\modules\v1\models;
 
 use Yii;
 
-/**
- * This is the model class for table "ficha_teorico".
- *
- * @property string $id
- * @property string $mod_id
- * @property string $fic_id
- * @property string $nota
- *
- * @property FichaRespuesta[] $fichaRespuestas
- */
 class FichaTeorico extends \yii\db\ActiveRecord
 {
-    /**
-     * @inheritdoc
-     */
+
     public static function tableName()
     {
         return 'ficha_teorico';
     }
 
-    /**
-     * @inheritdoc
-     */
     public function rules()
     {
         return [
@@ -36,9 +21,6 @@ class FichaTeorico extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
     public function attributeLabels()
     {
         return [
@@ -49,9 +31,6 @@ class FichaTeorico extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getFichaRespuestas()
     {
         return $this->hasMany(FichaRespuesta::className(), ['fict_id' => 'id']);

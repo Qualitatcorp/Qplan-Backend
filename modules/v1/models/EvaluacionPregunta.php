@@ -8,7 +8,7 @@ use Yii;
  * This is the model class for table "evaluacion_pregunta".
  *
  * @property string $id
- * @property string $ite_id
+ * @property string $eva_id
  * @property string $pregunta
  * @property string $comentario
  * @property string $creado
@@ -16,41 +16,32 @@ use Yii;
  * @property string $habilitado
  *
  * @property EvaluacionAlternativa[] $evaluacionAlternativas
- * @property EvaluacionItem $ite
+ * @property EvaluacionTeorica $eva
  * @property Recursos $recursos
  */
 class EvaluacionPregunta extends \yii\db\ActiveRecord
 {
-    /**
-     * @inheritdoc
-     */
     public static function tableName()
     {
         return 'evaluacion_pregunta';
     }
 
-    /**
-     * @inheritdoc
-     */
     public function rules()
     {
         return [
-            [['ite_id', 'pregunta'], 'required'],
-            [['ite_id'], 'integer'],
+            [['eva_id', 'pregunta'], 'required'],
+            [['eva_id'], 'integer'],
             [['pregunta', 'comentario', 'habilitado'], 'string'],
             [['creado', 'modificado'], 'safe'],
-            [['ite_id'], 'exist', 'skipOnError' => true, 'targetClass' => EvaluacionItem::className(), 'targetAttribute' => ['ite_id' => 'id']],
+            [['eva_id'], 'exist', 'skipOnError' => true, 'targetClass' => EvaluacionTeorica::className(), 'targetAttribute' => ['eva_id' => 'id']],
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
     public function attributeLabels()
     {
         return [
             'id' => 'ID',
-            'ite_id' => 'Ite ID',
+            'eva_id' => 'Eva ID',
             'pregunta' => 'Pregunta',
             'comentario' => 'Comentario',
             'creado' => 'Creado',
@@ -59,25 +50,28 @@ class EvaluacionPregunta extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getEvaluacionAlternativas()
+    public function fields()
+    {
+        $fields = parent::fields();
+        array_push($fields, 'alternativas','recursos');
+        return $fields;
+    }
+
+    public function extraFields()
+    {
+        return ['alternativas','evaluacion','recursos'];
+    }
+
+    public function getAlternativas()
     {
         return $this->hasMany(EvaluacionAlternativa::className(), ['pre_id' => 'id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getIte()
+    public function getEvaluacion()
     {
-        return $this->hasOne(EvaluacionItem::className(), ['id' => 'ite_id']);
+        return $this->hasOne(EvaluacionTeorica::className(), ['id' => 'eva_id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getRecursos()
     {
         return $this->hasOne(Recursos::className(), ['pre_id' => 'id']);
