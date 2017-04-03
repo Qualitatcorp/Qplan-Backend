@@ -6,7 +6,7 @@ use Yii;
 
 class PerfilModulo extends \yii\db\ActiveRecord
 {
-    
+
     public static function tableName()
     {
         return 'perfil_modulo';
@@ -36,6 +36,13 @@ class PerfilModulo extends \yii\db\ActiveRecord
         ];
     }
 
+    public function fields()
+    {
+        $fields = parent::fields();
+        array_push($fields, 'evaluaciones');
+        return $fields;
+    }
+
     public function extraFields()
     {
         return ['evaluacionteorica','perfil','fichas'];
@@ -56,7 +63,7 @@ class PerfilModulo extends \yii\db\ActiveRecord
     //     return $this->hasMany(PerfilEvaluacionTeorica::className(), ['mop_id' => 'id']);
     // }
 
-    public function getEvaluacionteorica()
+    public function getEvaluaciones()
     {
         return $this->hasMany(EvaluacionTeorica::className(), ['id' => 'evt_id'])->viaTable('perfil_evaluacion_teorica', ['mop_id' => 'id']);
     }

@@ -32,7 +32,14 @@ class EvaluacionTeorica extends \yii\db\ActiveRecord
             'descripcion' => 'Descripcion',
         ];
     }
-    
+
+    public function fields()
+    {
+        $fields = parent::fields();
+        array_push($fields, 'preguntas');
+        return $fields;
+    }
+
     public function extraFields()
     {
         return ['tipo','modulos','preguntas'];

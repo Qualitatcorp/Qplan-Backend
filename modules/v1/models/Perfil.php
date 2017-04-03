@@ -32,7 +32,7 @@ class Perfil extends \yii\db\ActiveRecord
 
     public function extraFields()
     {
-        return ['modulos','primario','secundario','practica','teorica','teorica.ficha'];
+        return ['modulos','primario','secundario','practica','teorica'];
     }
 
     public function getClasificacionPerfils()
@@ -88,12 +88,5 @@ class Perfil extends \yii\db\ActiveRecord
     public function getTeorica()
     {
         return $this->hasMany(PerfilModulo::className(), ['per_id' => 'id'])->where(['like', 'evaluacion', 'TEORICA']);
-    }    
-
-    public function getTeorica()
-    {
-        return $this->hasMany(PerfilModulo::className(), ['per_id' => 'id'])->where(['like', 'evaluacion', 'TEORICA']);
     }
-
-
 }
