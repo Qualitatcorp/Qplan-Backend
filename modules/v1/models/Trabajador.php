@@ -134,7 +134,7 @@ class Trabajador extends \yii\db\ActiveRecord
     // Orden trabajador
     public function getOt()
     {
-        return $this->hasMany(OrdenTrabajo::className(), ['id' => 'ot_id'])
+        return $this->hasOne(OrdenTrabajo::className(), ['id' => 'ot_id'])
             ->where("estado<>'CERRADO'")
             ->viaTable('orden_trabajo_trabajador', ['tra_id' => 'id']);
     }

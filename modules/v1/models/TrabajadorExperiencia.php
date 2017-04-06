@@ -67,7 +67,7 @@ class TrabajadorExperiencia extends \yii\db\ActiveRecord
     public function fields()
     {
         $fields = parent::fields();
-        array_push($fields, 'especialidad','sucursal');
+        array_push($fields, 'cargo');
         return $fields;
     }
 
@@ -76,13 +76,8 @@ class TrabajadorExperiencia extends \yii\db\ActiveRecord
         return $this->hasOne(Trabajador::className(), ['id' => 'tra_id']);
     }
 
-    public function getEspecialidad()
+    public function getCargo()
     {
-        return $this->hasOne(Especialidad::className(), ['id' => 'esp_id']);
-    }
-
-    public function getSucursal()
-    {
-        return $this->hasOne(EmpresaSucursal::className(), ['id' => 'suc_id']);
+        return $this->hasOne(EspecialidadCargo::className(), ['id' => 'car_id']);
     }
 }

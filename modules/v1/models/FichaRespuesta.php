@@ -31,10 +31,10 @@ class FichaRespuesta extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['fict_id', 'alt_id'], 'required'],
+            [['fict_id'], 'required'],
             [['fict_id', 'alt_id'], 'integer'],
             [['creado'], 'safe'],
-            [['alt_id'], 'exist', 'skipOnError' => true, 'targetClass' => EvaluacionAlternativa::className(), 'targetAttribute' => ['alt_id' => 'id']],
+            // [['alt_id'], 'exist', 'skipOnError' => true, 'targetClass' => EvaluacionAlternativa::className(), 'targetAttribute' => ['alt_id' => 'id']],
             [['fict_id'], 'exist', 'skipOnError' => true, 'targetClass' => FichaTeorico::className(), 'targetAttribute' => ['fict_id' => 'id']],
         ];
     }
