@@ -9,16 +9,13 @@ use Yii;
  *
  * @property string $id
  * @property string $tra_id
- * @property integer $esp_id
- * @property string $suc_id
- * @property string $inicio
- * @property string $termino
- * @property string $cargo
+ * @property integer $car_id
+ * @property string $tipo
+ * @property integer $meses
  * @property string $funciones
  *
  * @property Trabajador $tra
- * @property Especialidad $esp
- * @property EmpresaSucursal $suc
+ * @property EspecialidadCargo $car
  */
 class TrabajadorExperiencia extends \yii\db\ActiveRecord
 {
@@ -36,14 +33,11 @@ class TrabajadorExperiencia extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['tra_id', 'inicio', 'termino', 'cargo'], 'required'],
-            [['tra_id', 'esp_id', 'suc_id'], 'integer'],
-            [['inicio', 'termino'], 'safe'],
-            [['funciones'], 'string'],
-            [['cargo'], 'string', 'max' => 128],
+            [['tra_id', 'car_id', 'tipo', 'meses'], 'required'],
+            [['tra_id', 'car_id', 'meses'], 'integer'],
+            [['tipo', 'funciones'], 'string'],
             [['tra_id'], 'exist', 'skipOnError' => true, 'targetClass' => Trabajador::className(), 'targetAttribute' => ['tra_id' => 'id']],
-            [['esp_id'], 'exist', 'skipOnError' => true, 'targetClass' => Especialidad::className(), 'targetAttribute' => ['esp_id' => 'id']],
-            [['suc_id'], 'exist', 'skipOnError' => true, 'targetClass' => EmpresaSucursal::className(), 'targetAttribute' => ['suc_id' => 'id']],
+            [['car_id'], 'exist', 'skipOnError' => true, 'targetClass' => EspecialidadCargo::className(), 'targetAttribute' => ['car_id' => 'id']],
         ];
     }
 
@@ -54,28 +48,26 @@ class TrabajadorExperiencia extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'tra_id' => 'Tra ID',
-            'esp_id' => 'Esp ID',
-            'suc_id' => 'Suc ID',
-            'inicio' => 'Inicio',
-            'termino' => 'Termino',
-            'cargo' => 'Cargo',
+            'tra_id' => 'Trabajador',
+            'car_id' => 'Cargo',
+            'tipo' => 'Tipo',
+            'meses' => 'Meses',
             'funciones' => 'Funciones',
         ];
     }
 
-    public function fields()
+    public function extraFields()
     {
-        $fields = parent::fields();
-        array_push($fields, 'cargo');
-        return $fields;
+        return ['trabajador','cargo'];
     }
-
     public function getTrabajador()
     {
         return $this->hasOne(Trabajador::className(), ['id' => 'tra_id']);
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getCargo()
     {
         return $this->hasOne(EspecialidadCargo::className(), ['id' => 'car_id']);
