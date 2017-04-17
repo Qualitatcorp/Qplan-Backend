@@ -16,17 +16,11 @@ use Yii;
  */
 class OrdenTrabajoTrabajador extends \yii\db\ActiveRecord
 {
-    /**
-     * @inheritdoc
-     */
     public static function tableName()
     {
         return 'orden_trabajo_trabajador';
     }
 
-    /**
-     * @inheritdoc
-     */
     public function rules()
     {
         return [
@@ -38,9 +32,6 @@ class OrdenTrabajoTrabajador extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
     public function attributeLabels()
     {
         return [
@@ -51,21 +42,15 @@ class OrdenTrabajoTrabajador extends \yii\db\ActiveRecord
     }
 
     public function extraFields(){
-        return ['ot'];
+        return ['ot','trabajador'];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getOt()
     {
         return $this->hasOne(OrdenTrabajo::className(), ['id' => 'ot_id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getTra()
+    public function getTrabajador()
     {
         return $this->hasOne(Trabajador::className(), ['id' => 'tra_id']);
     }
