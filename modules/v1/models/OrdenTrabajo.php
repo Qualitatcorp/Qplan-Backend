@@ -18,27 +18,21 @@ use Yii;
  * @property string $estado
  *
  * @property Ficha[] $fichas
- * @property Trabajador[] $tras
  * @property OrdenTrabajoSolicitud $sol
  * @property Empresa $emp
  * @property Especialidad $esp
  * @property OrdenTrabajoSolicitud $sol0
+ * @property Perfil $per
  * @property OrdenTrabajoTrabajador[] $ordenTrabajoTrabajadors
- * @property Trabajador[] $tras0
+ * @property Trabajador[] $tras
  */
 class OrdenTrabajo extends \yii\db\ActiveRecord
 {
-    /**
-     * @inheritdoc
-     */
     public static function tableName()
     {
         return 'orden_trabajo';
     }
 
-    /**
-     * @inheritdoc
-     */
     public function rules()
     {
         return [
@@ -50,12 +44,10 @@ class OrdenTrabajo extends \yii\db\ActiveRecord
             [['emp_id'], 'exist', 'skipOnError' => true, 'targetClass' => Empresa::className(), 'targetAttribute' => ['emp_id' => 'id']],
             [['esp_id'], 'exist', 'skipOnError' => true, 'targetClass' => Especialidad::className(), 'targetAttribute' => ['esp_id' => 'id']],
             [['sol_id'], 'exist', 'skipOnError' => true, 'targetClass' => OrdenTrabajoSolicitud::className(), 'targetAttribute' => ['sol_id' => 'id']],
+            [['per_id'], 'exist', 'skipOnError' => true, 'targetClass' => Perfil::className(), 'targetAttribute' => ['per_id' => 'id']],
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
     public function attributeLabels()
     {
         return [
@@ -71,67 +63,60 @@ class OrdenTrabajo extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
+    public function extraFields()
+    {
+        return ['trabajador','mandante','fichas','solicitud','empresa','especialidad','perfil','countfichas','usuario'];
+    }
+
+    public function getTrabajador()
+    {
+        return $this->hasMany(Trabajador::className(), ['id' => 'tra_id'])->viaTable('orden_trabajo_trabajador', ['ot_id' => 'id']);
+    }
+
+    public function getMandante()
+    {
+        return $this->hasOne(Empresa::className(), ['id' => 'emp_id'])->viaTable('orden_trabajo_solicitud', ['id' => 'sol_id']);
+    }    
+    public function getUsuario()
+    {
+        return $this->hasOne(User::className(), ['id' => 'usu_id'])->viaTable('orden_trabajo_solicitud', ['id' => 'sol_id']);
+    }
+
     public function getFichas()
     {
         return $this->hasMany(Ficha::className(), ['ot_id' => 'id']);
     }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getTras()
+    public function getCountfichas()
     {
-        return $this->hasMany(Trabajador::className(), ['id' => 'tra_id'])->viaTable('ficha', ['ot_id' => 'id']);
+        return $this->getFichas()->count();
     }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getSol()
+    public function getSolicitud()
     {
         return $this->hasOne(OrdenTrabajoSolicitud::className(), ['id' => 'sol_id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getEmp()
+
+    public function getEmpresa()
     {
         return $this->hasOne(Empresa::className(), ['id' => 'emp_id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getEsp()
+
+    public function getEspecialidad()
     {
         return $this->hasOne(Especialidad::className(), ['id' => 'esp_id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getSol0()
+    public function getPerfil()
     {
-        return $this->hasOne(OrdenTrabajoSolicitud::className(), ['id' => 'sol_id']);
+        return $this->hasOne(Perfil::className(), ['id' => 'per_id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getOrdenTrabajoTrabajadors()
-    {
-        return $this->hasMany(OrdenTrabajoTrabajador::className(), ['ot_id' => 'id']);
-    }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getTras0()
-    {
-        return $this->hasMany(Trabajador::className(), ['id' => 'tra_id'])->viaTable('orden_trabajo_trabajador', ['ot_id' => 'id']);
-    }
+    // public function getOrdenTrabajoTrabajadors()
+    // {
+    //     return $this->hasMany(OrdenTrabajoTrabajador::className(), ['ot_id' => 'id']);
+    // }
+
+
 }
