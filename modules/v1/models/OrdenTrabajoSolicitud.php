@@ -8,7 +8,7 @@ use Yii;
  * This is the model class for table "orden_trabajo_solicitud".
  *
  * @property string $id
- * @property string $emp_id
+ * @property integer $emp_id
  * @property string $usu_id
  * @property string $creacion
  * @property string $inicio
@@ -16,6 +16,8 @@ use Yii;
  *
  * @property OrdenTrabajo[] $ordenTrabajos
  * @property OrdenTrabajo[] $ordenTrabajos0
+ * @property Empresa $emp
+ * @property User $usu
  */
 class OrdenTrabajoSolicitud extends \yii\db\ActiveRecord
 {
@@ -36,6 +38,8 @@ class OrdenTrabajoSolicitud extends \yii\db\ActiveRecord
             [['emp_id', 'usu_id', 'creacion', 'inicio', 'termino'], 'required'],
             [['emp_id', 'usu_id'], 'integer'],
             [['creacion', 'inicio', 'termino'], 'safe'],
+            [['emp_id'], 'exist', 'skipOnError' => true, 'targetClass' => Empresa::className(), 'targetAttribute' => ['emp_id' => 'id']],
+            [['usu_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['usu_id' => 'id']],
         ];
     }
 
@@ -68,5 +72,21 @@ class OrdenTrabajoSolicitud extends \yii\db\ActiveRecord
     public function getOrdenTrabajos0()
     {
         return $this->hasMany(OrdenTrabajo::className(), ['sol_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getEmp()
+    {
+        return $this->hasOne(Empresa::className(), ['id' => 'emp_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUsu()
+    {
+        return $this->hasOne(User::className(), ['id' => 'usu_id']);
     }
 }

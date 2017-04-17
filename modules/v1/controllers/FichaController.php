@@ -38,10 +38,10 @@ class FichaController extends ActiveController
 			try {
 			   $query = $model->find();
 				foreach ($_GET as $key => $value) {
-					if ($key != 'age') {
-						$query->andWhere(['like', $key, $value]);
+					if ($key != 'id') {
+						$query->andWhere(['=', $key, $value]);
 					}
-					if ($key == 'age') {
+					if ($key == 'id') {
 						$agevalue = explode('-',$value);
 						$query->andWhere(['between', $key,$agevalue[0],$agevalue[1]]);
 					}
