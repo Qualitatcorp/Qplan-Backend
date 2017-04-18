@@ -26,7 +26,7 @@ class OrdenTrabajoTrabajador extends \yii\db\ActiveRecord
         return [
             [['ot_id', 'tra_id'], 'required'],
             [['ot_id', 'tra_id'], 'integer'],
-            [['ot_id', 'tra_id'], 'unique', 'targetAttribute' => ['ot_id', 'tra_id'], 'message' => 'The combination of Ot ID and Tra ID has already been taken.'],
+            [['ot_id', 'tra_id'], 'unique', 'targetAttribute' => ['ot_id', 'tra_id'], 'message' => 'El trabajador ya existe en esta Orden de trabajo'],
             [['ot_id'], 'exist', 'skipOnError' => true, 'targetClass' => OrdenTrabajo::className(), 'targetAttribute' => ['ot_id' => 'id']],
             [['tra_id'], 'exist', 'skipOnError' => true, 'targetClass' => Trabajador::className(), 'targetAttribute' => ['tra_id' => 'id']],
         ];
@@ -36,8 +36,8 @@ class OrdenTrabajoTrabajador extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'ot_id' => 'Ot ID',
-            'tra_id' => 'Tra ID',
+            'ot_id' => 'Orden de trabajo',
+            'tra_id' => 'Trabajador',
         ];
     }
 
