@@ -31,7 +31,7 @@ class EvaluacionPregunta extends \yii\db\ActiveRecord
         return [
             [['eva_id', 'pregunta'], 'required'],
             [['eva_id'], 'integer'],
-            [['pregunta', 'comentario', 'habilitado'], 'string'],
+            [['pregunta', 'comentario', 'habilitado','nivel'], 'string'],     
             [['creado', 'modificado'], 'safe'],
             [['eva_id'], 'exist', 'skipOnError' => true, 'targetClass' => EvaluacionTeorica::className(), 'targetAttribute' => ['eva_id' => 'id']],
         ];
@@ -44,6 +44,7 @@ class EvaluacionPregunta extends \yii\db\ActiveRecord
             'eva_id' => 'Eva ID',
             'pregunta' => 'Pregunta',
             'comentario' => 'Comentario',
+            'nivel' =>'Nivel',
             'creado' => 'Creado',
             'modificado' => 'Modificado',
             'habilitado' => 'Habilitado',
