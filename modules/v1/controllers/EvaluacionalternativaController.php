@@ -6,7 +6,7 @@ use yii\rest\ActiveController;
 
 class EvaluacionalternativaController extends ActiveController
 {
-	public $modelClass = 'app\modules\v1\models\EspecialidadAlternativa';
+	public $modelClass = 'app\modules\v1\models\EvaluacionAlternativa';
 
 	public function behaviors()
 	{
