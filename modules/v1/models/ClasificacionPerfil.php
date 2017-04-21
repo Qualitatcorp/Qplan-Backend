@@ -53,10 +53,15 @@ class ClasificacionPerfil extends \yii\db\ActiveRecord
         ];
     }
 
+    public function extraFields()
+    {
+        return ['clasificacion','perfil'];
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCla()
+    public function getClasificacion()
     {
         return $this->hasOne(Clasificacion::className(), ['id' => 'cla_id']);
     }
@@ -64,7 +69,7 @@ class ClasificacionPerfil extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getPer()
+    public function getPerfil()
     {
         return $this->hasOne(Perfil::className(), ['id' => 'per_id']);
     }

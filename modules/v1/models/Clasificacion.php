@@ -51,11 +51,13 @@ class Clasificacion extends \yii\db\ActiveRecord
             'nombre' => 'Nombre',
         ];
     }
+    
+    public function extraFields()
+    {
+        return ['categoria'];
+    }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getCat()
+    public function getCategoria()
     {
         return $this->hasOne(ClasificacionCategoria::className(), ['id' => 'cat_id']);
     }
