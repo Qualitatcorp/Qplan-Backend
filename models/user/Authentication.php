@@ -28,6 +28,7 @@ class Authentication extends \yii\db\ActiveRecord
         return [
             [['token', 'user_id', 'client_id'], 'required'],
             [['user_id', 'client_id','expire'], 'integer'],
+            [['token','refresh'], 'unique'],
             [['token', 'refresh'], 'string', 'max' => 32],
             [['client_id'], 'exist', 'skipOnError' => true, 'targetClass' => Client::className(), 'targetAttribute' => ['client_id' => 'client_id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
@@ -66,23 +67,22 @@ class Authentication extends \yii\db\ActiveRecord
             ->andWhere(['>','expire',time()])
             ->one();
     }
-    public function refresh($auth = null,$expire_in = 3600){
-        if(!empty($auth)){
-            if($this->refresh===$auth){
-                $this->expire=time()+$expire_in;
-                $this->refresh=\Yii::$app->security->generateRandomString();
-                if($this->save()){
-                    return true;
-                }
-                echo "No guardo";
-                die();
-                return false;
-            }
+    public static function findRefresh($refresh)
+    {
+        return static::find()
+            ->where(['refresh'=>$refresh])
+            ->andWhere(['>','expire',time()])
+            ->one();
+    }
 
-                echo "No es igual";
-                die();
+    public function Renovate($expire_in=3600)
+    {
+        $this->expire=time()+$expire_in;
+        $this->refresh=\Yii::$app->security->generateRandomString();
+        while(!$this->save()){
+            $this->refresh=\Yii::$app->security->generateRandomString();
         }
-        return false;
+        return $expire_in;
     }
     public function getClient()
     {

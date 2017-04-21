@@ -151,21 +151,16 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     }
     public static function RefreshToken()
     {
-        //Request
-        $request = Yii::$app->request;
-        //Credentials
-        $access=[
-            'token'=>$request->post('access_token'),
-            'refresh'=>$request->post('refresh')
-        ];
-        $auth=Authentication::findAccessToken($access{'token'});
-        if(empty($auth)){
-            throw new HttpException(401, "No existen estas credenciales.");
+        $refresh = Yii::$app->request->post('refresh');
+        if(empty($refresh)){
+            throw new HttpException(401, "Solicitud Invalida.");
         }
-        if($auth->refresh($access['refresh'])){
+        $auth=Authentication::findRefresh($refresh);
+        if(!empty($auth)){
+            $time=$auth->Renovate();
             return [
                 'refresh'=>$auth->refresh,
-                'expire'=>3600
+                'expire_in'=>$time
             ];
         }else{
             throw new HttpException(401, "Error de autorización.");

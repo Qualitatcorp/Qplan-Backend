@@ -8,23 +8,17 @@ class OrdentrabajosolicitudController extends ActiveController
 {
 	public $modelClass = 'app\modules\v1\models\OrdenTrabajoSolicitud';
 
-	// public function behaviors()
-	// {
-	// 	return \yii\helpers\ArrayHelper::merge(parent::behaviors(),[
-	// 		'authenticator'=>[
-	// 			'class' => \yii\filters\auth\HttpBearerAuth::className()  
-	// 		],
-	// 		'authorization'=>[
-	// 			'class' => \app\components\Authorization::className(),
-	// 		],
-	// 		// 'verbs'=>[           
-	// 		// 	'class' => \yii\filters\VerbFilter::className(),
-	// 		// 	'actions' => [
-	// 		// 		'search'  => ['get'],
-	// 		// 	],
-	// 		// ],
-	// 	]);
-	// }
+	public function behaviors()
+	{
+		return \yii\helpers\ArrayHelper::merge(parent::behaviors(),[
+			'authenticator'=>[
+				'class' => \yii\filters\auth\HttpBearerAuth::className()  
+			],
+			'authorization'=>[
+				'class' => \app\components\Authorization::className(),
+			],
+		]);
+	}
 
 	public function actionSearch()
 	{

@@ -39,7 +39,7 @@ class Authorization extends ActionFilter
 			//auto Registrar Accesos
 			static::registerResource($resource);
 			// permitir siempre
-			// return true;
+			return true;
 			return Yii::$app->db->createCommand("CALL sp_access_resource_user(:user_id, :resource)")
 							->bindValue(':user_id' , $user_id)
 							->bindValue(':resource',static::SerializeResource($resource))
