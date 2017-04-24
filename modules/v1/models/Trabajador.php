@@ -137,9 +137,9 @@ class Trabajador extends \yii\db\ActiveRecord
         // return $this->hasOne(OrdenTrabajo::className(), ['id' => 'ot_id'])
         //     ->where("estado<>'CERRADO'")
         //     ->viaTable('orden_trabajo_trabajador', ['tra_id' => 'id']);
-        return $this->hasOne(OrdenTrabajo::className(), ['id' => 'ot_id'])
-            ->viaTable('orden_trabajo_trabajador', ['tra_id' => 'id'])
-            ->where("SELECT ott.ot_id FROM  orden_trabajo_trabajador ott WHERE NOT EXISTS(SELECT * FROM ficha f INNER JOIN ficha_teorico ON (f.id = ficha_teorico.fic_id) WHERE ott.ot_id = f.ot_id AND ott.tra_id = f.tra_id) AND ott.tra_id = :id AND  orden_trabajo.estado <> 'CERRADO'",[":id"=>$this->id]);
+        // return $this->hasOne(OrdenTrabajo::className(), ['id' => 'ot_id'])
+        //     ->viaTable('orden_trabajo_trabajador', ['tra_id' => 'id'])
+        //     ->where("SELECT ott.ot_id FROM  orden_trabajo_trabajador ott WHERE NOT EXISTS(SELECT * FROM ficha f INNER JOIN ficha_teorico ON (f.id = ficha_teorico.fic_id) WHERE ott.ot_id = f.ot_id AND ott.tra_id = f.tra_id AND f.proceso NOT LIKE '%FINALIZADO TEORICO%') AND ott.tra_id = :id AND  orden_trabajo.estado <> 'CERRADO'",[":id"=>$this->id]);
     }
 
     // public function getOt()
