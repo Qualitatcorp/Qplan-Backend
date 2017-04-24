@@ -33,12 +33,12 @@ class EvaluacionTeorica extends \yii\db\ActiveRecord
         ];
     }
 
-    public function fields()
-    {
-        $fields = parent::fields();
-        array_push($fields, 'preguntas');
-        return $fields;
-    }
+    // public function fields()
+    // {
+    //     $fields = parent::fields();
+    //     array_push($fields, 'preguntas');
+    //     return $fields;
+    // }
 
     public function extraFields()
     {

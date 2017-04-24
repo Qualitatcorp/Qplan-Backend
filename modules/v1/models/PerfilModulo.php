@@ -36,16 +36,16 @@ class PerfilModulo extends \yii\db\ActiveRecord
         ];
     }
 
-    public function fields()
-    {
-        $fields = parent::fields();
-        array_push($fields, 'evaluaciones');
-        return $fields;
-    }
+    // public function fields()
+    // {
+    //     $fields = parent::fields();
+    //     array_push($fields, 'evaluaciones');
+    //     return $fields;
+    // }
 
     public function extraFields()
     {
-        return ['evaluacionteorica','perfil','fichas'];
+        return ['evaluacionteorica','perfil','fichas','evaluaciones'];
     }
 
     public function getFichaPracticas()

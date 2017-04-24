@@ -32,13 +32,17 @@ class Recursos extends \yii\db\ActiveRecord
         ];
     }
 
-    public function fields()
-    {
-        $fields = parent::fields();
-        array_push($fields,'option','sources');
-        return $fields;
-    }
+    // public function fields()
+    // {
+    //     $fields = parent::fields();
+    //     array_push($fields,'option','sources');
+    //     return $fields;
+    // }
 
+    public function extraFields()
+    {
+        return ['option','options','sources'];
+    }
 
     public function getPregunta()
     {
@@ -52,7 +56,8 @@ class Recursos extends \yii\db\ActiveRecord
 
     public function getOptions()
     {
-        return $this->hasMany(RecursosOptions::className(), ['id' => 'opt_id'])->viaTable('recursos_has_options', ['rec_id' => 'id']);
+        // return $this->hasMany(RecursosOptions::className(), ['id' => 'opt_id'])->viaTable('recursos_has_options', ['rec_id' => 'id']);
+        return RecursosOptions::findBySql('SELECT recursos_options.* FROM recursos_has_options INNER JOIN recursos_options ON (recursos_has_options.opt_id = recursos_options.id) WHERE recursos_has_options.rec_id=:id',[':id'=>$this->id])->all();
     }
 
     public function getOption()
@@ -74,6 +79,7 @@ class Recursos extends \yii\db\ActiveRecord
 
     public function getSources()
     {
-        return $this->hasMany(RecursosSources::className(), ['id' => 'src_id'])->viaTable('recursos_has_sources', ['rec_id' => 'id']);
+        // return $this->hasMany(RecursosSources::className(), ['id' => 'src_id'])->viaTable('recursos_has_sources', ['rec_id' => 'id']);
+    return RecursosOptions::findBySql('SELECT recursos_has_sources.* FROM `recursos_has_sources` INNER JOIN `recursos_sources` ON (`recursos_has_sources`.`src_id` = `recursos_sources`.`id`) WHERE `recursos_has_sources`.`rec_id`=:id',[':id'=>$this->id])->all();
     }
 }

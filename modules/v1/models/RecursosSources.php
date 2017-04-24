@@ -52,10 +52,10 @@ class RecursosSources extends \yii\db\ActiveRecord
         ];
     }
 
-    public function fields()
-    {
-        return ['src','type','title'];
-    }
+    // public function fields()
+    // {
+    //     return ['src','type','title'];
+    // }
 
     // public function getRecursosHasSources()
     // {

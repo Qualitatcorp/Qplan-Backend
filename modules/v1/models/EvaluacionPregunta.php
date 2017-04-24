@@ -50,12 +50,12 @@ class EvaluacionPregunta extends \yii\db\ActiveRecord
         ];
     }
 
-    public function fields()
-    {
-        $fields = parent::fields();
-        array_push($fields, 'alternativas','recursos');
-        return $fields;
-    }
+    // public function fields()
+    // {
+    //     $fields = parent::fields();
+    //     array_push($fields, 'alternativas','recursos');
+    //     return $fields;
+    // }
 
     public function extraFields()
     {
