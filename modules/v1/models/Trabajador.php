@@ -134,6 +134,7 @@ class Trabajador extends \yii\db\ActiveRecord
     // Orden trabajador
     public function getOt()
     {
+        return OrdenTrabajo::findBySql("SELECT * FROM `orden_trabajo` WHERE `orden_trabajo`.`id` IN (SELECT `orden_trabajo_trabajador`.`ot_id` AS `id` FROM `orden_trabajo_trabajador` WHERE `orden_trabajo_trabajador`.`tra_id` = :id) AND `orden_trabajo`.`estado` <> 'CERRADO' AND `orden_trabajo`.`id` NOT IN (SELECT `ficha`.`ot_id` AS `id` FROM `ficha` WHERE `ficha`.`proceso` LIKE '%FINALIZADO TEORICO%' AND `ficha`.`tra_id` = :id)",[':id'=>$this->id]);
         // return $this->hasOne(OrdenTrabajo::className(), ['id' => 'ot_id'])
         //     ->where("estado<>'CERRADO'")
         //     ->viaTable('orden_trabajo_trabajador', ['tra_id' => 'id']);
