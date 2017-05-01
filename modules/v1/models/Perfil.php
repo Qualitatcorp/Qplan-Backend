@@ -34,8 +34,8 @@ class Perfil extends \yii\db\ActiveRecord
     {
         return [
         'modulos',
-        'primario',
-        'secundario',
+        'modprimario',
+        'modsecundario',
         'modpractica',
         'modteorica',
         'pet',
@@ -86,24 +86,24 @@ class Perfil extends \yii\db\ActiveRecord
         return $this->hasMany(PerfilModulo::className(), ['per_id' => 'id']);
     }
 
-    public function getPrimario()
+    public function getModprimario()
     {
         return $this->hasMany(PerfilModulo::className(), ['per_id' => 'id'])->where(['nivel'=>'PRIMARIO']);
     }
 
-    public function getSecundario()
+    public function getModsecundario()
     {
         return $this->hasMany(PerfilModulo::className(), ['per_id' => 'id'])->where(['nivel'=>'SECUNDARIO']);
     }
 
-    public function getPractica()
+    public function getModpractica()
     {
-        return $this->hasMany(PerfilModulo::className(), ['per_id' => 'id'])->where(['like', 'evaluacion', 'PRACTICA']);
+        return PerfilModulo::findBySql("SELECT * FROM perfil_modulo WHERE FIND_IN_SET('PRACTICA',evaluacion) AND per_id=:id",[':id'=>$this->id])->all();
     }
 
     public function getModteorica()
     {
-        return PerfilModulo::findBySql("SELECT * FROM perfil_modulo WHERE evaluacion LIKE '%TEORICA%' AND per_id=:id",[':id'=>$this->id])->all();
+        return PerfilModulo::findBySql("SELECT * FROM perfil_modulo WHERE FIND_IN_SET('TEORICA',evaluacion) AND per_id=:id",[':id'=>$this->id])->all();
         // return $this->hasMany(PerfilModulo::className(), ['per_id' => 'id'])->where(['like', 'evaluacion', 'TEORICA']);
     }
 

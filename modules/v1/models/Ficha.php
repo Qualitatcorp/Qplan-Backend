@@ -58,34 +58,31 @@ class Ficha extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
+    public function extraFields()
+    {
+        return ['ot','trabajador','ficpracticas','modulos','ficteoricas'];
+    }
+
     public function getOt()
     {
         return $this->hasOne(OrdenTrabajo::className(), ['id' => 'ot_id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getTra()
+    public function getTrabajador()
     {
         return $this->hasOne(Trabajador::className(), ['id' => 'tra_id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getFichaPracticas()
+    public function getFicpracticas()
     {
         return $this->hasMany(FichaPractica::className(), ['fic_id' => 'id']);
+    }    
+    public function getFicteoricas()
+    {
+        return $this->hasMany(FichaTeorico::className(), ['fic_id' => 'id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getMods()
+    public function getModulos()
     {
         return $this->hasMany(PerfilModulo::className(), ['id' => 'mod_id'])->viaTable('ficha_practica', ['fic_id' => 'id']);
     }

@@ -72,7 +72,7 @@ class OrdenTrabajo extends \yii\db\ActiveRecord
 
     public function extraFields()
     {
-        return ['trabajador','mandante','fichas','solicitud','empresa','especialidad','perfil','countfichas','usuario'];
+        return ['trabajador','mandante','fichas','solicitud','empresa','especialidad','perfil','countfic','counttra','usuario'];
     }
 
     public function getTrabajador()
@@ -93,9 +93,13 @@ class OrdenTrabajo extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Ficha::className(), ['ot_id' => 'id']);
     }
-    public function getCountfichas()
+    public function getCountfic()
     {
         return $this->getFichas()->count();
+    }
+    public function getCounttra()
+    {
+        return $this->getTrabajador()->count();
     }
     public function getSolicitud()
     {
