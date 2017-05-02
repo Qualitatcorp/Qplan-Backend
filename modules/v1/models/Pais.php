@@ -4,15 +4,7 @@ namespace app\modules\v1\models;
 
 use Yii;
 
-/**
- * This is the model class for table "pais".
- *
- * @property integer $id
- * @property string $codigo
- * @property string $nombre
- *
- * @property Empresa[] $empresas
- */
+
 class Pais extends \yii\db\ActiveRecord
 {
     /**
