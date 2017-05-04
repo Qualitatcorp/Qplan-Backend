@@ -17,17 +17,13 @@ use Yii;
  */
 class FichaRespuesta extends \yii\db\ActiveRecord
 {
-    /**
-     * @inheritdoc
-     */
+
     public static function tableName()
     {
         return 'ficha_respuesta';
     }
 
-    /**
-     * @inheritdoc
-     */
+
     public function rules()
     {
         return [
@@ -39,9 +35,7 @@ class FichaRespuesta extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
+
     public function attributeLabels()
     {
         return [
@@ -52,17 +46,11 @@ class FichaRespuesta extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getAlt()
     {
         return $this->hasOne(EvaluacionAlternativa::className(), ['id' => 'alt_id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getFict()
     {
         return $this->hasOne(FichaTeorico::className(), ['id' => 'fict_id']);

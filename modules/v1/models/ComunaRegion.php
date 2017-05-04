@@ -15,17 +15,13 @@ use Yii;
  */
 class ComunaRegion extends \yii\db\ActiveRecord
 {
-    /**
-     * @inheritdoc
-     */
+
     public static function tableName()
     {
         return 'comuna_region';
     }
 
-    /**
-     * @inheritdoc
-     */
+
     public function rules()
     {
         return [
@@ -36,9 +32,7 @@ class ComunaRegion extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
+
     public function attributeLabels()
     {
         return [
@@ -48,9 +42,6 @@ class ComunaRegion extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getComunaProvincias()
     {
         return $this->hasMany(ComunaProvincia::className(), ['reg_id' => 'reg_id']);

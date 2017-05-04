@@ -20,17 +20,13 @@ use Yii;
  */
 class Test extends \yii\db\ActiveRecord
 {
-    /**
-     * @inheritdoc
-     */
+
     public static function tableName()
     {
         return 'test';
     }
 
-    /**
-     * @inheritdoc
-     */
+
     public function rules()
     {
         return [
@@ -45,9 +41,7 @@ class Test extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
+
     public function attributeLabels()
     {
         return [
@@ -62,9 +56,6 @@ class Test extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getComuna0()
     {
         return $this->hasOne(Comuna::className(), ['com_id' => 'comuna']);

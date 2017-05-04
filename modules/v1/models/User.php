@@ -26,17 +26,13 @@ use Yii;
  */
 class User extends \yii\db\ActiveRecord
 {
-    /**
-     * @inheritdoc
-     */
+
     public static function tableName()
     {
         return 'user';
     }
 
-    /**
-     * @inheritdoc
-     */
+
     public function rules()
     {
         return [
@@ -53,9 +49,7 @@ class User extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
+
     public function attributeLabels()
     {
         return [
@@ -72,41 +66,26 @@ class User extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getEmpresaUsers()
     {
         return $this->hasMany(EmpresaUser::className(), ['usu_id' => 'id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getEmps()
     {
         return $this->hasMany(Empresa::className(), ['id' => 'emp_id'])->viaTable('empresa_user', ['usu_id' => 'id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getUserAuthentications()
     {
         return $this->hasMany(UserAuthentication::className(), ['user_id' => 'id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getUserAuthorizations()
     {
         return $this->hasMany(UserAuthorization::className(), ['user_id' => 'id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getRes()
     {
         return $this->hasMany(UserResource::className(), ['id' => 'res_id'])->viaTable('user_authorization', ['user_id' => 'id']);

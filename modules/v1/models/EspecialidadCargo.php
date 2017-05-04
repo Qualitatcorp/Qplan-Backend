@@ -16,17 +16,13 @@ use Yii;
  */
 class EspecialidadCargo extends \yii\db\ActiveRecord
 {
-    /**
-     * @inheritdoc
-     */
+
     public static function tableName()
     {
         return 'especialidad_cargo';
     }
 
-    /**
-     * @inheritdoc
-     */
+
     public function rules()
     {
         return [
@@ -37,9 +33,7 @@ class EspecialidadCargo extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
+
     public function attributeLabels()
     {
         return [
@@ -49,17 +43,11 @@ class EspecialidadCargo extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getEspecialidads()
     {
         return $this->hasMany(Especialidad::className(), ['car_id' => 'id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getAre()
     {
         return $this->hasOne(EspecialidadArea::className(), ['id' => 'are_id']);

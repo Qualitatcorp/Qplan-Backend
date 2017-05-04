@@ -21,17 +21,13 @@ use Yii;
  */
 class OrdenTrabajoSolicitud extends \yii\db\ActiveRecord
 {
-    /**
-     * @inheritdoc
-     */
+
     public static function tableName()
     {
         return 'orden_trabajo_solicitud';
     }
 
-    /**
-     * @inheritdoc
-     */
+
     public function rules()
     {
         return [
@@ -43,9 +39,7 @@ class OrdenTrabajoSolicitud extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
+
     public function attributeLabels()
     {
         return [
@@ -58,33 +52,21 @@ class OrdenTrabajoSolicitud extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getOrdenTrabajos()
     {
         return $this->hasMany(OrdenTrabajo::className(), ['sol_id' => 'id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getOrdenTrabajos0()
     {
         return $this->hasMany(OrdenTrabajo::className(), ['sol_id' => 'id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getEmp()
     {
         return $this->hasOne(Empresa::className(), ['id' => 'emp_id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getUsu()
     {
         return $this->hasOne(User::className(), ['id' => 'usu_id']);

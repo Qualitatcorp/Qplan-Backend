@@ -17,17 +17,13 @@ use Yii;
  */
 class RecursosOptions extends \yii\db\ActiveRecord
 {
-    /**
-     * @inheritdoc
-     */
+
     public static function tableName()
     {
         return 'recursos_options';
     }
 
-    /**
-     * @inheritdoc
-     */
+
     public function rules()
     {
         return [
@@ -38,9 +34,7 @@ class RecursosOptions extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
+
     public function attributeLabels()
     {
         return [
@@ -51,17 +45,11 @@ class RecursosOptions extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getRecursosHasOptions()
     {
         return $this->hasMany(RecursosHasOptions::className(), ['opt_id' => 'id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getRecs()
     {
         return $this->hasMany(Recursos::className(), ['id' => 'rec_id'])->viaTable('recursos_has_options', ['opt_id' => 'id']);

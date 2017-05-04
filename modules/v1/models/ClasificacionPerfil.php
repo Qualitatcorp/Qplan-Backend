@@ -17,17 +17,13 @@ use Yii;
  */
 class ClasificacionPerfil extends \yii\db\ActiveRecord
 {
-    /**
-     * @inheritdoc
-     */
+
     public static function tableName()
     {
         return 'clasificacion_perfil';
     }
 
-    /**
-     * @inheritdoc
-     */
+
     public function rules()
     {
         return [
@@ -40,9 +36,7 @@ class ClasificacionPerfil extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
+
     public function attributeLabels()
     {
         return [
@@ -58,17 +52,11 @@ class ClasificacionPerfil extends \yii\db\ActiveRecord
         return ['clasificacion','perfil'];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getClasificacion()
     {
         return $this->hasOne(Clasificacion::className(), ['id' => 'cla_id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getPerfil()
     {
         return $this->hasOne(Perfil::className(), ['id' => 'per_id']);

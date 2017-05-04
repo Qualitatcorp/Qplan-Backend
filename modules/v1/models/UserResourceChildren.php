@@ -16,17 +16,13 @@ use Yii;
  */
 class UserResourceChildren extends \yii\db\ActiveRecord
 {
-    /**
-     * @inheritdoc
-     */
+
     public static function tableName()
     {
         return 'user_resource_children';
     }
 
-    /**
-     * @inheritdoc
-     */
+
     public function rules()
     {
         return [
@@ -38,9 +34,7 @@ class UserResourceChildren extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
+
     public function attributeLabels()
     {
         return [
@@ -50,17 +44,11 @@ class UserResourceChildren extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getParent()
     {
         return $this->hasOne(UserResource::className(), ['id' => 'parent_id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getChild()
     {
         return $this->hasOne(UserResource::className(), ['id' => 'child_id']);
