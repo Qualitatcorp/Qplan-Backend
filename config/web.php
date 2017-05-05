@@ -1,5 +1,6 @@
 <?php
 
+use kartik\mpdf\Pdf;
 $params = require(__DIR__ . '/params.php');
 
 $config = [
@@ -94,7 +95,8 @@ $config = [
 						'v1/userauthorization',
 						'v1/userclient',
 						'v1/userresource',
-						'v1/userresourcechildren'
+						'v1/userresourcechildren',
+						'v1/report'
 					],
 					'extraPatterns' => [
 						'GET search' => 'search'
@@ -121,7 +123,14 @@ $config = [
 				'POST authentication/<action:\w+>' => 'authentication/<action>',
 			],
 		],
-	],
+		'pdf' => [
+        'class' => Pdf::classname(),
+        'format' => Pdf::FORMAT_A4,
+        'orientation' => Pdf::ORIENT_PORTRAIT,
+        'destination' => Pdf::DEST_BROWSER,
+        // refer settings section for all configuration options
+    ],
+],
 	'modules' => [
 		'v1' => [
 			'class' => 'app\modules\v1\module',
