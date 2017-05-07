@@ -3,10 +3,22 @@
 namespace app\modules\v1\controllers;
 
 use yii\rest\ActiveController;
-
+use yii;
+use yii\web\UploadedFile;
 class RecursossourcesController extends ActiveController
 {
 	public $modelClass = 'app\modules\v1\models\RecursosSources';
+
+public function actions()
+{
+    $actions = parent::actions();
+
+    // disable the "delete" and "create" actions
+    unset($actions['create'],$actions['index']);
+
+     
+    return $actions;
+}
 
 	public function behaviors()
 	{
@@ -19,7 +31,39 @@ class RecursossourcesController extends ActiveController
 			],
 		]);
 	}
+	 
+ 
+	public function actionCreate()
+	{	
+		if (Yii::$app->request->isPost) {
+			$request=\Yii::$app->request;
+			$model = new $this->modelClass;
+			$model->attributes=Yii::$app->request->post();
+			$model->file = UploadedFile::getInstancesByName('file');
+			$model->attributes=$request;
+			$model->file = UploadedFile::getInstancesByName('file');
+			if ($model->file == null){
+				throw new \yii\web\HttpException(500, 'Error interno del sistema.');
+			} 
 
+
+			if ($model->upload()){
+
+				return array('status'=>1,'data'=>array_filter($model->attributes));
+			}else{
+				throw new \yii\web\HttpException(500, 'Error interno del sistema.');
+			}
+
+		}
+
+
+
+	}
+
+
+
+	 
+	
 	public function actionSearch()
 	{
 		if (!empty($_GET)) {
