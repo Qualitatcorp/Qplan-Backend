@@ -60,7 +60,7 @@ class EvaluacionPregunta extends \yii\db\ActiveRecord
 
     public function extraFields()
     {
-        return ['alternativas','evaluacion','recursos'];
+        return ['alternativas','evaluacion','recursos','rhs','sources'];
     }
 
     public function getAlternativas()
@@ -76,5 +76,14 @@ class EvaluacionPregunta extends \yii\db\ActiveRecord
     public function getRecursos()
     {
         return $this->hasOne(Recursos::className(), ['pre_id' => 'id']);
+    }
+
+    public function getRhs()
+    {
+        return RecursosHasSources::findBySql("SELECT * FROM recursos_has_sources WHERE recursos_has_sources.rec_id IN (SELECT recursos.id FROM recursos WHERE recursos.pre_id=:id)",[':id'=>$this->id])->all();
+    }
+    public function getSources()
+    {
+        return RecursosSources::findBySql("SELECT * FROM  recursos_sources WHERE recursos_sources.id IN (SELECT recursos_has_sources.src_id FROM recursos_has_sources INNER JOIN recursos ON (recursos_has_sources.rec_id = recursos.id) WHERE recursos.pre_id = :id)",[':id'=>$this->id])->all();
     }
 }
