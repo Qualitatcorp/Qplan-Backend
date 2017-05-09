@@ -15,17 +15,13 @@ use Yii;
  */
 class EvaluacionTipo extends \yii\db\ActiveRecord
 {
-    /**
-     * @inheritdoc
-     */
+
     public static function tableName()
     {
         return 'evaluacion_tipo';
     }
 
-    /**
-     * @inheritdoc
-     */
+
     public function rules()
     {
         return [
@@ -36,9 +32,7 @@ class EvaluacionTipo extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
+
     public function attributeLabels()
     {
         return [
@@ -48,9 +42,6 @@ class EvaluacionTipo extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getEvaluacionTeoricas()
     {
         return $this->hasMany(EvaluacionTeorica::className(), ['tev_id' => 'id']);

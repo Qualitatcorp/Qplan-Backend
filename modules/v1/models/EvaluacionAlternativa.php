@@ -18,17 +18,13 @@ use Yii;
  */
 class EvaluacionAlternativa extends \yii\db\ActiveRecord
 {
-    /**
-     * @inheritdoc
-     */
+
     public static function tableName()
     {
         return 'evaluacion_alternativa';
     }
 
-    /**
-     * @inheritdoc
-     */
+
     public function rules()
     {
         return [
@@ -40,9 +36,7 @@ class EvaluacionAlternativa extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
+
     public function attributeLabels()
     {
         return [
@@ -54,17 +48,11 @@ class EvaluacionAlternativa extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getPre()
     {
         return $this->hasOne(EvaluacionPregunta::className(), ['id' => 'pre_id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getFichaRespuestas()
     {
         return $this->hasMany(FichaRespuesta::className(), ['alt_id' => 'id']);

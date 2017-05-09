@@ -6,7 +6,7 @@ use yii\rest\ActiveController;
 
 class UserresourceController extends ActiveController
 {
-	public $modelClass = 'app\modules\v1\models\UserResourceChildren';
+	public $modelClass = 'app\modules\v1\models\UserResource';
 
 	public function behaviors()
 	{

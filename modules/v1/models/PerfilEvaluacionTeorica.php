@@ -16,17 +16,13 @@ use Yii;
  */
 class PerfilEvaluacionTeorica extends \yii\db\ActiveRecord
 {
-    /**
-     * @inheritdoc
-     */
+
     public static function tableName()
     {
         return 'perfil_evaluacion_teorica';
     }
 
-    /**
-     * @inheritdoc
-     */
+
     public function rules()
     {
         return [
@@ -38,9 +34,7 @@ class PerfilEvaluacionTeorica extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
+
     public function attributeLabels()
     {
         return [
@@ -50,17 +44,11 @@ class PerfilEvaluacionTeorica extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getMop()
     {
         return $this->hasOne(PerfilModulo::className(), ['id' => 'mop_id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getEvt()
     {
         return $this->hasOne(EvaluacionTeorica::className(), ['id' => 'evt_id']);

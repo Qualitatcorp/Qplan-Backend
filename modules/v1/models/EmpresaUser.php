@@ -16,17 +16,13 @@ use Yii;
  */
 class EmpresaUser extends \yii\db\ActiveRecord
 {
-    /**
-     * @inheritdoc
-     */
+
     public static function tableName()
     {
         return 'empresa_user';
     }
 
-    /**
-     * @inheritdoc
-     */
+
     public function rules()
     {
         return [
@@ -38,9 +34,7 @@ class EmpresaUser extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
+
     public function attributeLabels()
     {
         return [
@@ -50,17 +44,11 @@ class EmpresaUser extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getEmp()
     {
         return $this->hasOne(Empresa::className(), ['id' => 'emp_id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getUsu()
     {
         return $this->hasOne(User::className(), ['id' => 'usu_id']);

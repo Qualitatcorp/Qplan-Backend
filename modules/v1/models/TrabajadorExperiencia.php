@@ -19,37 +19,30 @@ use Yii;
  */
 class TrabajadorExperiencia extends \yii\db\ActiveRecord
 {
-    /**
-     * @inheritdoc
-     */
+
     public static function tableName()
     {
         return 'trabajador_experiencia';
     }
 
-    /**
-     * @inheritdoc
-     */
+
     public function rules()
     {
         return [
-            [['tra_id', 'car_id', 'tipo', 'meses'], 'required'],
-            [['tra_id', 'car_id', 'meses'], 'integer'],
-            [['tipo', 'funciones'], 'string'],
-            [['tra_id'], 'exist', 'skipOnError' => true, 'targetClass' => Trabajador::className(), 'targetAttribute' => ['tra_id' => 'id']],
-            [['car_id'], 'exist', 'skipOnError' => true, 'targetClass' => EspecialidadCargo::className(), 'targetAttribute' => ['car_id' => 'id']],
+            [['tra_id', 'rubro', 'tipo', 'meses'], 'required'],
+            [['tra_id', 'meses'], 'integer'],
+            [['tipo', 'rubro', 'funciones'], 'string'],
+            [['tra_id'], 'exist', 'skipOnError' => true, 'targetClass' => Trabajador::className(), 'targetAttribute' => ['tra_id' => 'id']]
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
+
     public function attributeLabels()
     {
         return [
             'id' => 'ID',
             'tra_id' => 'Trabajador',
-            'car_id' => 'Cargo',
+            'rubro' => 'Rubro',
             'tipo' => 'Tipo',
             'meses' => 'Meses',
             'funciones' => 'Funciones',
@@ -58,18 +51,10 @@ class TrabajadorExperiencia extends \yii\db\ActiveRecord
 
     public function extraFields()
     {
-        return ['trabajador','cargo'];
+        return ['trabajador'];
     }
     public function getTrabajador()
     {
         return $this->hasOne(Trabajador::className(), ['id' => 'tra_id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getCargo()
-    {
-        return $this->hasOne(EspecialidadCargo::className(), ['id' => 'car_id']);
     }
 }
