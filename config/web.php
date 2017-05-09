@@ -120,9 +120,10 @@ $config = [
 				// '<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
 				// '<controller:\w+>/<action:\w+>/<id:\w+>'=>'<controller>/<action>',
 				// 'GET <ns:\w+>/<controller:\w+>/<action:\w+>' => '<ns>/<controller>/<action>',
-				'<ns:\w+>/<controller:\w+>/<action:\w+>' => '<ns>/<controller>/<action>',
-				'<ns:\w+>/<controller:\w+>' => '<ns>/<controller>/index',
+				//'<ns:\w+>/<controller:\w+>/<action:\w+>' => '<ns>/<controller>/<action>',
+				//'<ns:\w+>/<controller:\w+>' => '<ns>/<controller>/index',
 				'POST authentication/<action:\w+>' => 'authentication/<action>',
+				'report/<controller:\w+>' => 'report/<controller>/index',
 			],
 		],
 		'pdf' => [
