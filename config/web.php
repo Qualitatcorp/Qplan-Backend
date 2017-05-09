@@ -120,6 +120,8 @@ $config = [
 				// '<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
 				// '<controller:\w+>/<action:\w+>/<id:\w+>'=>'<controller>/<action>',
 				// 'GET <ns:\w+>/<controller:\w+>/<action:\w+>' => '<ns>/<controller>/<action>',
+				'<ns:\w+>/<controller:\w+>/<action:\w+>' => '<ns>/<controller>/<action>',
+				'<ns:\w+>/<controller:\w+>' => '<ns>/<controller>/index',
 				'POST authentication/<action:\w+>' => 'authentication/<action>',
 			],
 		],
@@ -135,6 +137,9 @@ $config = [
 		'v1' => [
 			'class' => 'app\modules\v1\module',
 		],
+		'report' => [
+            'class' => 'app\modules\report\report',
+        ],
 	],
 	'params' => $params,
 ];
