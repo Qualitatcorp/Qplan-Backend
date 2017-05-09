@@ -1,25 +1,51 @@
 <?php
 
 namespace app\modules\report\controllers;
-
+use app\modules\v1\models\OrdenTrabajo;
 use yii\web\Controller;
 use kartik\mpdf\Pdf;
 
 /**
  * Default controller for the `report` module
  */
-class DefaultController extends Controller
+class OtController extends Controller
 {
     /**
      * Renders the index view for the module
      * @return string
      */
+    // public function behaviors()
+    // {
+    //     return \yii\helpers\ArrayHelper::merge(parent::behaviors(),[
+    //         'authenticator'=>[
+    //             'class' => \yii\filters\auth\HttpBearerAuth::className()  
+    //         ],
+    //         'authorization'=>[
+    //             'class' => \app\components\Authorization::className(),
+    //         ],
+    //     ]);
+    // }
+
     public function actionIndex()
     {
-       
-    $content = $this->renderPartial('_report');
- 
-    // setup kartik\mpdf\Pdf component
+
+    
+    //$model = OrdenTrabajo::findOne(1);
+    //
+     echo "<pre>";
+   
+    //$t = OrdenTrabajo::find(1)->with(['trabajador','especialidad'])->asArray()->One();
+    
+    $t = OrdenTrabajo::find(1)->with(['trabajador','especialidad'])->One();
+    print_r($t);
+    
+    echo "<pre>";
+    die();
+    $content = $this->renderPartial('_report',array(
+       'trabajador'=>$trabajador,
+    ));
+   
+   	
     $pdf = new Pdf([
        
         // A4 paper format
