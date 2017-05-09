@@ -30,13 +30,14 @@ use Yii;
  * @property string $nivel
  * @property string $creacion
  * @property string $modificacion
- *
+ * @property string $sexo
  * @property Ficha[] $fichas
  * @property OrdenTrabajo[] $ots
  * @property OrdenTrabajoTrabajador[] $ordenTrabajoTrabajadors
  * @property OrdenTrabajo[] $ots0
  * @property Comuna $com
  * @property Pais $pais
+ * @property range $sexo
  * @property TrabajadorExperiencia[] $trabajadorExperiencias
  */
 class Trabajador extends \yii\db\ActiveRecord
@@ -52,7 +53,7 @@ class Trabajador extends \yii\db\ActiveRecord
             [['com_id', 'pais_id', 'antiguedad', 'hijos'], 'integer'],
             [['rut'], 'required'],
             [['nacimiento', 'creacion', 'modificacion'], 'safe'],
-            [['civil', 'licencia', 'talla', 'direccion', 'afp', 'prevision', 'nivel'], 'string'],
+            [['civil', 'licencia', 'talla', 'direccion', 'afp', 'prevision', 'nivel','sexo'], 'string'],
             [['rut'], 'string', 'max' => 12],
             [['nombre', 'paterno', 'materno'], 'string', 'max' => 64],
             [['fono'], 'string', 'max' => 36],
@@ -90,6 +91,7 @@ class Trabajador extends \yii\db\ActiveRecord
             'nivel' => 'Nivel',
             'creacion' => 'Creacion',
             'modificacion' => 'Modificacion',
+            'sexo' => 'Sexo'
         ];
     }
 
@@ -117,7 +119,8 @@ class Trabajador extends \yii\db\ActiveRecord
             'prevision',
             'nivel',
             'creacion',
-            'modificacion'
+            'modificacion',
+            'sexo'
         ];
     }
 
