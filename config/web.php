@@ -74,6 +74,7 @@ $config = [
 						'v1/fichapractica',
 						'v1/ficharespuesta',
 						'v1/fichateorico',
+						'v1/fichatercero',
 						'v1/ordentrabajo',
 						'v1/ordentrabajosolicitud',
 						'v1/ordentrabajotrabajador',
@@ -82,11 +83,13 @@ $config = [
 						'v1/perfilespecialidad',
 						'v1/perfilevaluacionteorica',
 						'v1/perfilmodulo',
+						'v1/psicologicopca',
 						'v1/recursos',
 						'v1/recursoshasoptions',
 						'v1/recursoshassources',
 						'v1/recursosoptions',
 						'v1/recursossources',
+						'v1/report',
 						'v1/trabajador',
 						'v1/trabajadorevaluador',
 						'v1/trabajadorexperiencia',
@@ -96,7 +99,8 @@ $config = [
 						'v1/userclient',
 						'v1/userresource',
 						'v1/userresourcechildren',
-						'v1/report'
+						
+
 					],
 					'extraPatterns' => [
 						'GET search' => 'search'
