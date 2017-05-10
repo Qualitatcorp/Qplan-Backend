@@ -96,7 +96,9 @@ $config = [
 						'v1/userclient',
 						'v1/userresource',
 						'v1/userresourcechildren',
-						'v1/report'
+						'v1/fichatercero',
+						'v1/provider',
+						'v1/providermetodo'
 					],
 					'extraPatterns' => [
 						'GET search' => 'search'
@@ -124,16 +126,17 @@ $config = [
 				//'<ns:\w+>/<controller:\w+>' => '<ns>/<controller>/index',
 				'POST authentication/<action:\w+>' => 'authentication/<action>',
 				'report/<controller:\w+>' => 'report/<controller>/index',
+				'report/<controller:\w+>/<action:\w+>' => 'report/<controller>/<action>',
 			],
 		],
 		'pdf' => [
-        'class' => Pdf::classname(),
-        'format' => Pdf::FORMAT_A4,
-        'orientation' => Pdf::ORIENT_PORTRAIT,
-        'destination' => Pdf::DEST_BROWSER,
-        // refer settings section for all configuration options
-    ],
-],
+	        'class' => Pdf::classname(),
+	        'format' => Pdf::FORMAT_A4,
+	        'orientation' => Pdf::ORIENT_PORTRAIT,
+	        'destination' => Pdf::DEST_BROWSER,
+	        // refer settings section for all configuration options
+	    ],
+	],
 	'modules' => [
 		'v1' => [
 			'class' => 'app\modules\v1\module',
