@@ -48,7 +48,9 @@ class Perfil extends \yii\db\ActiveRecord
         'sources',
         'options',
         'ots',
-        'cats'
+        'clasificacion',
+        'clasificacioncategoria',
+        'clasificacionperfil'
         ];
     }
 
@@ -154,14 +156,16 @@ class Perfil extends \yii\db\ActiveRecord
          return RecursosOptions::findBySql("SELECT DISTINCT recursos_options.* FROM perfil_evaluacion_teorica INNER JOIN perfil_modulo ON (perfil_evaluacion_teorica.mop_id = perfil_modulo.id) INNER JOIN evaluacion_teorica ON (perfil_evaluacion_teorica.evt_id = evaluacion_teorica.id) INNER JOIN evaluacion_pregunta ON (evaluacion_teorica.id = evaluacion_pregunta.eva_id) INNER JOIN recursos ON (evaluacion_pregunta.id = recursos.pre_id) INNER JOIN recursos_has_options ON (recursos.id = recursos_has_options.rec_id) INNER JOIN recursos_options ON (recursos_has_options.opt_id = recursos_options.id) WHERE evaluacion LIKE '%TEORICA%' AND per_id = :id",[':id'=>$this->id])->all();
     }
 
-    public function getCats()
+    public function getClasificacioncategoria()
     {
         return ClasificacionCategoria::findBySql("SELECT * FROM clasificacion_categoria WHERE clasificacion_categoria.id IN (SELECT clasificacion.cat_id FROM clasificacion INNER JOIN clasificacion_perfil ON (clasificacion.id = clasificacion_perfil.cla_id) WHERE clasificacion_perfil.per_id = :id)",[':id'=>$this->id])->all();
                        
     }
 
-
-
+    public function getClasificacionperfil()
+    {
+        return $this->hasMany(ClasificacionPerfil::className(), ['per_id' => 'id']);  
+    }
 
 
     // public function getAlternativas()
