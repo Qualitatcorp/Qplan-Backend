@@ -54,12 +54,17 @@ class Ficha extends \yii\db\ActiveRecord
 
     public function extraFields()
     {
-        return ['ot','trabajador','ficpracticas','modulos','ficteoricas'];
+        return ['ot','trabajador','ficpracticas','modulos','ficteoricas','modtercero'];
     }
 
     public function getOt()
     {
         return $this->hasOne(OrdenTrabajo::className(), ['id' => 'ot_id']);
+    }
+
+    public function getModtercero()
+    {
+        return PerfilModulo::findBySql("SELECT * FROM perfil_modulo WHERE per_id IN (SELECT perfil.id FROM perfil INNER JOIN orden_trabajo ON (perfil.id = orden_trabajo.per_id) WHERE orden_trabajo.id=:id) AND FIND_IN_SET('TERCERO',evaluacion)>0",[':id'=>$this->ot_id])->all();
     }
 
     public function getTrabajador()
