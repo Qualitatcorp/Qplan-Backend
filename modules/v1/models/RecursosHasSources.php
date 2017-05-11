@@ -28,6 +28,7 @@ class RecursosHasSources extends \yii\db\ActiveRecord
         return [
             [['rec_id', 'src_id'], 'required'],
             [['rec_id', 'src_id'], 'integer'],
+            ['tipo', 'in', 'range' => ['CONTENIDO','AUDIO-PREGUNTA','POSTER']],
             [['rec_id', 'src_id'], 'unique', 'targetAttribute' => ['rec_id', 'src_id'], 'message' => 'The combination of Rec ID and Src ID has already been taken.'],
             [['rec_id'], 'exist', 'skipOnError' => true, 'targetClass' => Recursos::className(), 'targetAttribute' => ['rec_id' => 'id']],
             [['src_id'], 'exist', 'skipOnError' => true, 'targetClass' => RecursosSources::className(), 'targetAttribute' => ['src_id' => 'id']],
@@ -41,6 +42,7 @@ class RecursosHasSources extends \yii\db\ActiveRecord
             'id' => 'ID',
             'rec_id' => 'Rec ID',
             'src_id' => 'Src ID',
+            'tipo' => 'Tipo',
         ];
     }
 
@@ -53,4 +55,7 @@ class RecursosHasSources extends \yii\db\ActiveRecord
     {
         return $this->hasOne(RecursosSources::className(), ['id' => 'src_id']);
     }
+
+  
+
 }
