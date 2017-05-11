@@ -28,158 +28,135 @@ use Yii;
  * @property string $afp
  * @property string $prevision
  * @property string $nivel
+ * @property string $sexo
  * @property string $creacion
  * @property string $modificacion
- * @property string $sexo
+ *
  * @property Ficha[] $fichas
- * @property OrdenTrabajo[] $ots
  * @property OrdenTrabajoTrabajador[] $ordenTrabajoTrabajadors
- * @property OrdenTrabajo[] $ots0
+ * @property OrdenTrabajo[] $ots
  * @property Comuna $com
  * @property Pais $pais
- * @property range $sexo
+ * @property TrabajadorEvaluador[] $trabajadorEvaluadors
  * @property TrabajadorExperiencia[] $trabajadorExperiencias
  */
 class Trabajador extends \yii\db\ActiveRecord
 {
+    /**
+     * @inheritdoc
+     */
     public static function tableName()
     {
         return 'trabajador';
     }
 
+    /**
+     * @inheritdoc
+     */
     public function rules()
     {
         return [
             [['com_id', 'pais_id', 'antiguedad', 'hijos'], 'integer'],
             [['rut'], 'required'],
             [['nacimiento', 'creacion', 'modificacion'], 'safe'],
-            [['civil', 'licencia', 'talla', 'direccion', 'afp', 'prevision', 'nivel','sexo'], 'string'],
+            [['civil', 'licencia', 'talla', 'direccion', 'afp', 'prevision', 'nivel'], 'string'],
             [['rut'], 'string', 'max' => 12],
             [['nombre', 'paterno', 'materno'], 'string', 'max' => 64],
             [['fono'], 'string', 'max' => 36],
             [['mail', 'gerencia'], 'string', 'max' => 128],
             [['contacto'], 'string', 'max' => 256],
+            [['sexo'], 'string', 'max' => 30],
             [['rut'], 'unique'],
             [['com_id'], 'exist', 'skipOnError' => true, 'targetClass' => Comuna::className(), 'targetAttribute' => ['com_id' => 'com_id']],
             [['pais_id'], 'exist', 'skipOnError' => true, 'targetClass' => Pais::className(), 'targetAttribute' => ['pais_id' => 'id']],
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'com_id' => 'Com ID',
-            'pais_id' => 'Pais ID',
-            'rut' => 'Rut',
-            'nombre' => 'Nombre',
-            'paterno' => 'Paterno',
-            'materno' => 'Materno',
-            'nacimiento' => 'Nacimiento',
-            'fono' => 'Fono',
-            'mail' => 'Mail',
+            'id' => 'Trabajador',
+            'com_id' => 'Comuna',
+            'pais_id' => 'Nacionalidad',
+            'rut' => 'RUT',
+            'nombre' => 'Nombres',
+            'paterno' => 'Apellido paterno',
+            'materno' => 'Apellido materno',
+            'nacimiento' => 'Fecha de nacimiento',
+            'fono' => 'Numero Telefonico',
+            'mail' => 'e-mail',
             'gerencia' => 'Gerencia',
-            'antiguedad' => 'Antiguedad',
-            'civil' => 'Civil',
-            'hijos' => 'Hijos',
+            'antiguedad' => 'Años de antigüedad',
+            'civil' => 'Estado civil',
+            'hijos' => 'Cantidad de hijos',
             'licencia' => 'Licencia',
             'talla' => 'Talla',
-            'direccion' => 'Direccion',
+            'direccion' => 'Dirección',
             'contacto' => 'Contacto',
             'afp' => 'Afp',
-            'prevision' => 'Prevision',
-            'nivel' => 'Nivel',
-            'creacion' => 'Creacion',
-            'modificacion' => 'Modificacion',
-            'sexo' => 'Sexo'
+            'prevision' => 'Previsión de salud',
+            'nivel' => 'Nivel educacional',
+            'sexo' => 'Sexo',
+            'creacion' => 'Fecha de creación',
+            'modificacion' => 'Fecha de modificación',
         ];
     }
 
-    public function fields(){
-        return [
-            'id',
-            'rut',
-            'pais',
-            'comuna',
-            'nombre',
-            'paterno',
-            'materno',
-            'nacimiento',
-            'fono',
-            'mail',
-            'gerencia',
-            'antiguedad',
-            'civil',
-            'hijos',
-            'licencia',
-            'talla',
-            'direccion',
-            'contacto',
-            'afp',
-            'prevision',
-            'nivel',
-            'creacion',
-            'modificacion',
-            'sexo'
-        ];
-    }
-
-    public function extraFields(){
-        return ['ot','ots','comuna','pais','experiencias'];
-    }
-
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getFichas()
     {
         return $this->hasMany(Ficha::className(), ['tra_id' => 'id']);
     }
 
-    
-    // Orden trabajador
-    public function getOt()
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOrdenTrabajoTrabajadors()
     {
-        return OrdenTrabajo::findBySql("SELECT * FROM `orden_trabajo` WHERE `orden_trabajo`.`id` IN (SELECT `orden_trabajo_trabajador`.`ot_id` AS `id` FROM `orden_trabajo_trabajador` WHERE `orden_trabajo_trabajador`.`tra_id` = :id) AND `orden_trabajo`.`estado` <> 'CERRADO' AND `orden_trabajo`.`id` NOT IN (SELECT `ficha`.`ot_id` AS `id` FROM `ficha` WHERE `ficha`.`proceso` LIKE '%FINALIZADO TEORICO%' AND `ficha`.`tra_id` = :id)",[':id'=>$this->id]);
-        // return $this->hasOne(OrdenTrabajo::className(), ['id' => 'ot_id'])
-        //     ->where("estado<>'CERRADO'")
-        //     ->viaTable('orden_trabajo_trabajador', ['tra_id' => 'id']);
-        // return $this->hasOne(OrdenTrabajo::className(), ['id' => 'ot_id'])
-        //     ->viaTable('orden_trabajo_trabajador', ['tra_id' => 'id'])
-        //     ->where("SELECT ott.ot_id FROM  orden_trabajo_trabajador ott WHERE NOT EXISTS(SELECT * FROM ficha f INNER JOIN ficha_teorico ON (f.id = ficha_teorico.fic_id) WHERE ott.ot_id = f.ot_id AND ott.tra_id = f.tra_id AND f.proceso NOT LIKE '%FINALIZADO TEORICO%') AND ott.tra_id = :id AND  orden_trabajo.estado <> 'CERRADO'",[":id"=>$this->id]);
+        return $this->hasMany(OrdenTrabajoTrabajador::className(), ['tra_id' => 'id']);
     }
 
-    // public function getOt()
-    // {
-    //     // return $this->hasOne(OrdenTrabajo::className(), ['id' => 'ot_id'])
-    //     //     ->where("estado<>'CERRADO'")
-    //     //     ->viaTable('orden_trabajo_trabajador', ['tra_id' => 'id']);
-    //     return $this->findBySql("");
-    // }
-
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getOts()
     {
         return $this->hasMany(OrdenTrabajo::className(), ['id' => 'ot_id'])->viaTable('orden_trabajo_trabajador', ['tra_id' => 'id']);
     }
 
-    // public function getOts()
-    // {
-    //     return $this->hasMany(OrdenTrabajo::className(), ['id' => 'ot_id'])->viaTable('ficha', ['tra_id' => 'id']);
-    // }
-
-    // public function getOrdenTrabajoTrabajadors()
-    // {
-    //     return $this->hasMany(OrdenTrabajoTrabajador::className(), ['tra_id' => 'id']);
-    // }
-
-    public function getComuna()
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCom()
     {
         return $this->hasOne(Comuna::className(), ['com_id' => 'com_id']);
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getPais()
     {
         return $this->hasOne(Pais::className(), ['id' => 'pais_id']);
     }
 
-    public function getExperiencias()
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTrabajadorEvaluadors()
+    {
+        return $this->hasMany(TrabajadorEvaluador::className(), ['tra_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTrabajadorExperiencias()
     {
         return $this->hasMany(TrabajadorExperiencia::className(), ['tra_id' => 'id']);
     }
