@@ -1,107 +1,45 @@
 <?php 
 
 namespace app\modules\v1\controllers;
-
-use yii\rest\ActiveController;
-
-class PsicologicopcaController extends ActiveController
+use yii;
+use yii\rest\Controller;
+use soapClient;
+class PsicologicopcaController extends Controller
 {
-	public $modelClass = 'app\modules\v1\models\Psicologicopca';
-
-	// public function behaviors()
-	// {
-	// 	return \yii\helpers\ArrayHelper::merge(parent::behaviors(),[
-	// 		'authenticator'=>[
-	// 			'class' => \yii\filters\auth\HttpBearerAuth::className()  
-	// 		],
-	// 		'authorization'=>[
-	// 			'class' => \app\components\Authorization::className(),
-	// 		],
-	// 	]);
-	// }
-
-	public function actionSearch()
-	{
-		if (!empty($_GET)) {
-			$request=\Yii::$app->request;
-			$reserve=['page','index','order','limit'];
-			$model = new $this->modelClass;
-			foreach ($_GET as $key => $value) {
-				if (!$model->hasAttribute($key)&&!in_array($key,$reserve)) {
-					throw new \yii\web\HttpException(404, 'Atributo invalido :' . $key);
-				}
-			}
-			try {
-			   	$query = $model->find();
-			   	$range=['id'];
-				foreach ($_GET as $key => $value) {
-					if(!in_array($key,$reserve)){
-						if (in_array($key,$range)) {
-							$limit = explode('-',$value);
-							$query->andWhere(['between', $key,$limit[0],$limit[1]]);
-						}else{
-							$query->andWhere(['like', $key, $value]);
-						}
-					}
-				}
-				$id=($request->get('index'))?$request->get('index'):'id';
-				$sort=($request->get('order')=='asc')?SORT_ASC:SORT_DESC;
-				$provider = new \yii\data\ActiveDataProvider([
-					'query' => $query,
-					'sort' => [
-						'defaultOrder' => [
-							$id=>$sort
-						]
-					],
-				  	'pagination' => [
-						'defaultPageSize' => 20,'page'=>(isset($_GET['page']))?intval($_GET['page'])-1:0
-					],
-				]);
-			} catch (Exception $ex) {
-				throw new \yii\web\HttpException(500, 'Error interno del sistema.');
-			}
-
-			if ($provider->getCount() <= 0) {
-				throw new \yii\web\HttpException(404, 'No existen entradas con los parametros propuestos.');
-			} else {
-				return $provider;
-			}
-		} else {
-			throw new \yii\web\HttpException(400, 'No se puede crear una query a partir de la informacion propuesta.');
-		}
-	}
-
-    public function actionIndex()
-    {
-       return '1';
-    }
-    private function crearPCA(){
-    	$client = new SoapClient(
-    		'https://timshr.com/services/PcaService.svc?singleWsdl'
-    		);
-    	$response =  $client->AddSurvey(
-    		array('evaluacionPca' => array(
-    			"CoCod" => "5ccf4857-2691-4eaf-b2e0-f7d42375691c",
-    			"CoMailNot"=>"danielgonzalor@gmail.com",
-    			"CoRegCod"=>"es-cl",
-    			"PcaTip"=>"D",
-    			"PerGen"=>77,
-    			"PerMail"=>"danielgonzalor@gmail.com",
-    			"PerNom"=>"daniel",
-    			"PerNumIde"=>'12',
-    			"PerPriApe"=>"Rivera",
-    			"PerSegApe"=>"Rivera",
 
 
 
+  public function actionCreate()
+  { 
+   $request = Yii::$app->request;
+   $trabajador = $request->post();
+   if($trabajador['sexo'] == "FEMENINO"){
+     $sexo = 70;
+   }else{
+     $sexo = 77; 
+   }
+   $client =
+   new SoapClient(
+    'https://timshr.com/services/PcaService.svc?singleWsdl'
+    );
+   $response =  $client->AddSurvey(
+     array('evaluacionPca' => array(
+      "CoCod" => "5ccf4857-2691-4eaf-b2e0-f7d42375691c",
+      "CoMailNot"=>"",
+      "CoRegCod"=>"es-cl",
+      "PcaTip"=>"D",
+      "PerGen"=> $sexo,
+      "PerMail"=>$trabajador['mail'],
+      "PerNom"=> $trabajador['nombre'],
+      "PerNumIde"=>$trabajador['rut'],
+      "PerPriApe"=>$trabajador['paterno'],
+      "PerSegApe"=>$trabajador['materno'],
+      ) )
+     );
+   return $response;
 
-    			) )
-    		);
-    	echo "<pre>";
-    	print_r($response);
-
-
-    	echo "</pre>";
-    }
+ }
+ 
 
 }
+
