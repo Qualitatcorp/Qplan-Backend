@@ -15,7 +15,6 @@ use Yii;
  * @property string $paterno
  * @property string $materno
  * @property string $nacimiento
- * @property string $sexo
  * @property string $fono
  * @property string $mail
  * @property string $gerencia
@@ -31,35 +30,30 @@ use Yii;
  * @property string $nivel
  * @property string $creacion
  * @property string $modificacion
- *
+ * @property string $sexo
  * @property Ficha[] $fichas
- * @property OrdenTrabajoTrabajador[] $ordenTrabajoTrabajadors
  * @property OrdenTrabajo[] $ots
+ * @property OrdenTrabajoTrabajador[] $ordenTrabajoTrabajadors
+ * @property OrdenTrabajo[] $ots0
  * @property Comuna $com
  * @property Pais $pais
- * @property TrabajadorEvaluador[] $trabajadorEvaluadors
+ * @property range $sexo
  * @property TrabajadorExperiencia[] $trabajadorExperiencias
  */
 class Trabajador extends \yii\db\ActiveRecord
 {
-    /**
-     * @inheritdoc
-     */
     public static function tableName()
     {
         return 'trabajador';
     }
 
-    /**
-     * @inheritdoc
-     */
     public function rules()
     {
         return [
             [['com_id', 'pais_id', 'antiguedad', 'hijos'], 'integer'],
             [['rut'], 'required'],
             [['nacimiento', 'creacion', 'modificacion'], 'safe'],
-            [['sexo', 'civil', 'licencia', 'talla', 'direccion', 'afp', 'prevision', 'nivel'], 'string'],
+            [['civil', 'licencia', 'talla', 'direccion', 'afp', 'prevision', 'nivel','sexo'], 'string'],
             [['rut'], 'string', 'max' => 12],
             [['nombre', 'paterno', 'materno'], 'string', 'max' => 64],
             [['fono'], 'string', 'max' => 36],
@@ -71,36 +65,62 @@ class Trabajador extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
     public function attributeLabels()
     {
         return [
-            'id' => 'Trabajador',
-            'com_id' => 'Comuna',
-            'pais_id' => 'Nacionalidad',
-            'rut' => 'RUT',
-            'nombre' => 'Nombres',
-            'paterno' => 'Apellido paterno',
-            'materno' => 'Apellido materno',
-            'nacimiento' => 'Fecha de nacimiento',
-            'sexo' => 'Sexo de la persona',
-            'fono' => 'Numero Telefonico',
-            'mail' => 'e-mail',
+            'id' => 'ID',
+            'com_id' => 'Com ID',
+            'pais_id' => 'Pais ID',
+            'rut' => 'Rut',
+            'nombre' => 'Nombre',
+            'paterno' => 'Paterno',
+            'materno' => 'Materno',
+            'nacimiento' => 'Nacimiento',
+            'fono' => 'Fono',
+            'mail' => 'Mail',
             'gerencia' => 'Gerencia',
-            'antiguedad' => 'Años de antigüedad',
-            'civil' => 'Estado civil',
-            'hijos' => 'Cantidad de hijos',
+            'antiguedad' => 'Antiguedad',
+            'civil' => 'Civil',
+            'hijos' => 'Hijos',
             'licencia' => 'Licencia',
             'talla' => 'Talla',
-            'direccion' => 'Dirección',
+            'direccion' => 'Direccion',
             'contacto' => 'Contacto',
             'afp' => 'Afp',
-            'prevision' => 'Previsión de salud',
-            'nivel' => 'Nivel educacional',
-            'creacion' => 'Fecha de creación',
-            'modificacion' => 'Fecha de modificación',
+            'prevision' => 'Prevision',
+            'nivel' => 'Nivel',
+            'creacion' => 'Creacion',
+            'modificacion' => 'Modificacion',
+            'sexo' => 'Sexo'
+        ];
+    }
+
+    public function fields(){
+        return [
+            'id',
+            'rut',
+            'pais',
+            'comuna',
+            'nombre',
+            'paterno',
+            'materno',
+            'nacimiento',
+            'fono',
+            'mail',
+            'gerencia',
+            'antiguedad',
+            'civil',
+            'hijos',
+            'licencia',
+            'talla',
+            'direccion',
+            'contacto',
+            'afp',
+            'prevision',
+            'nivel',
+            'creacion',
+            'modificacion',
+            'sexo'
         ];
     }
 
