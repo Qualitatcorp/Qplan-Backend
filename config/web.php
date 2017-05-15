@@ -127,9 +127,14 @@ $config = [
 				// 'GET <ns:\w+>/<controller:\w+>/<action:\w+>' => '<ns>/<controller>/<action>',
 				//'<ns:\w+>/<controller:\w+>/<action:\w+>' => '<ns>/<controller>/<action>',
 				//'<ns:\w+>/<controller:\w+>' => '<ns>/<controller>/index',
+				'POST v1/psicologicopca/gotosurvey' => 'v1/psicologicopca/gotosurvey',
+				'POST v1/psicologicopca/test' => 'v1/psicologicopca/test',
+				'POST v1/psicologicopca/getresult' => 'v1/psicologicopca/getresult',
+				'v1/psicologicopca/<action:\w+>' => 'v1/psicologicopca/<action:\w+>',
 				'POST authentication/<action:\w+>' => 'authentication/<action>',
 				'report/<controller:\w+>' => 'report/<controller>/index',
 				'report/<controller:\w+>/<action:\w+>' => 'report/<controller>/<action>',
+				 
 			],
 		],
 		'pdf' => [
