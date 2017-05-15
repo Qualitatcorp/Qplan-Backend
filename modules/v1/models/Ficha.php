@@ -54,7 +54,7 @@ class Ficha extends \yii\db\ActiveRecord
 
     public function extraFields()
     {
-        return ['ot','trabajador','ficpracticas','modulos','ficteoricas','modtercero'];
+        return ['ot','trabajador','ficpracticas','modulos','ficpracticas','ficteoricas','modtercero'];
     }
 
     public function getOt()
