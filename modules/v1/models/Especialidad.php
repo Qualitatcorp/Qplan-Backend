@@ -19,17 +19,13 @@ use Yii;
  */
 class Especialidad extends \yii\db\ActiveRecord
 {
-    /**
-     * @inheritdoc
-     */
+
     public static function tableName()
     {
         return 'especialidad';
     }
 
-    /**
-     * @inheritdoc
-     */
+
     public function rules()
     {
         return [
@@ -40,9 +36,7 @@ class Especialidad extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
+
     public function attributeLabels()
     {
         return [
@@ -52,41 +46,26 @@ class Especialidad extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getCar()
     {
         return $this->hasOne(EspecialidadCargo::className(), ['id' => 'car_id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getOrdenTrabajos()
     {
         return $this->hasMany(OrdenTrabajo::className(), ['esp_id' => 'id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getPerfilEspecialidads()
     {
         return $this->hasMany(PerfilEspecialidad::className(), ['esp_id' => 'id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getPers()
     {
         return $this->hasMany(Perfil::className(), ['id' => 'per_id'])->viaTable('perfil_especialidad', ['esp_id' => 'id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getTrabajadorExperiencias()
     {
         return $this->hasMany(TrabajadorExperiencia::className(), ['esp_id' => 'id']);

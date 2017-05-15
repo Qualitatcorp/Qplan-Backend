@@ -16,17 +16,13 @@ use Yii;
  */
 class PerfilEspecialidad extends \yii\db\ActiveRecord
 {
-    /**
-     * @inheritdoc
-     */
+
     public static function tableName()
     {
         return 'perfil_especialidad';
     }
 
-    /**
-     * @inheritdoc
-     */
+
     public function rules()
     {
         return [
@@ -38,9 +34,7 @@ class PerfilEspecialidad extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
+
     public function attributeLabels()
     {
         return [
@@ -50,17 +44,11 @@ class PerfilEspecialidad extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getPer()
     {
         return $this->hasOne(Perfil::className(), ['id' => 'per_id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getEsp()
     {
         return $this->hasOne(Especialidad::className(), ['id' => 'esp_id']);

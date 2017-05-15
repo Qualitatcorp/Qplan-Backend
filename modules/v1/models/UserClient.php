@@ -16,17 +16,13 @@ use Yii;
  */
 class UserClient extends \yii\db\ActiveRecord
 {
-    /**
-     * @inheritdoc
-     */
+
     public static function tableName()
     {
         return 'user_client';
     }
 
-    /**
-     * @inheritdoc
-     */
+
     public function rules()
     {
         return [
@@ -35,9 +31,7 @@ class UserClient extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
+
     public function attributeLabels()
     {
         return [
@@ -48,9 +42,6 @@ class UserClient extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getUserAuthentications()
     {
         return $this->hasMany(UserAuthentication::className(), ['client_id' => 'client_id']);

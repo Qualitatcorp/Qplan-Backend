@@ -18,17 +18,13 @@ use Yii;
  */
 class FichaPractica extends \yii\db\ActiveRecord
 {
-    /**
-     * @inheritdoc
-     */
+
     public static function tableName()
     {
         return 'ficha_practica';
     }
 
-    /**
-     * @inheritdoc
-     */
+
     public function rules()
     {
         return [
@@ -41,9 +37,7 @@ class FichaPractica extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
+
     public function attributeLabels()
     {
         return [
@@ -55,17 +49,11 @@ class FichaPractica extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getMod()
     {
         return $this->hasOne(PerfilModulo::className(), ['id' => 'mod_id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getFic()
     {
         return $this->hasOne(Ficha::className(), ['id' => 'fic_id']);

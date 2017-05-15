@@ -14,17 +14,13 @@ use Yii;
  */
 class ClasificacionCategoria extends \yii\db\ActiveRecord
 {
-    /**
-     * @inheritdoc
-     */
+
     public static function tableName()
     {
         return 'clasificacion_categoria';
     }
 
-    /**
-     * @inheritdoc
-     */
+
     public function rules()
     {
         return [
@@ -34,9 +30,7 @@ class ClasificacionCategoria extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
+
     public function attributeLabels()
     {
         return [
@@ -45,9 +39,6 @@ class ClasificacionCategoria extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getClasificacions()
     {
         return $this->hasMany(Clasificacion::className(), ['cat_id' => 'id']);

@@ -18,17 +18,13 @@ use Yii;
  */
 class UserAuthentication extends \yii\db\ActiveRecord
 {
-    /**
-     * @inheritdoc
-     */
+
     public static function tableName()
     {
         return 'user_authentication';
     }
 
-    /**
-     * @inheritdoc
-     */
+
     public function rules()
     {
         return [
@@ -40,9 +36,7 @@ class UserAuthentication extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
+
     public function attributeLabels()
     {
         return [
@@ -54,17 +48,16 @@ class UserAuthentication extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
+    public function extraFields()
+    {
+        return ['client','user'];
+    }
+
     public function getClient()
     {
         return $this->hasOne(UserClient::className(), ['client_id' => 'client_id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getUser()
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);

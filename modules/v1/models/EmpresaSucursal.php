@@ -17,17 +17,13 @@ use Yii;
  */
 class EmpresaSucursal extends \yii\db\ActiveRecord
 {
-    /**
-     * @inheritdoc
-     */
+
     public static function tableName()
     {
         return 'empresa_sucursal';
     }
 
-    /**
-     * @inheritdoc
-     */
+
     public function rules()
     {
         return [
@@ -39,9 +35,7 @@ class EmpresaSucursal extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
+
     public function attributeLabels()
     {
         return [
@@ -52,17 +46,11 @@ class EmpresaSucursal extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getEmp()
     {
         return $this->hasOne(Empresa::className(), ['id' => 'emp_id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getTrabajadorExperiencias()
     {
         return $this->hasMany(TrabajadorExperiencia::className(), ['suc_id' => 'id']);

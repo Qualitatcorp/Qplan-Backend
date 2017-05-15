@@ -4,9 +4,9 @@ namespace app\modules\v1\controllers;
 
 use yii\rest\ActiveController;
 
-class UserresourceController extends ActiveController
+class ProviderController extends ActiveController
 {
-	public $modelClass = 'app\modules\v1\models\UserResource';
+	public $modelClass = 'app\modules\v1\models\Provider';
 
 	public function behaviors()
 	{
@@ -23,38 +23,33 @@ class UserresourceController extends ActiveController
 	public function actionSearch()
 	{
 		if (!empty($_GET)) {
-			$request=\Yii::$app->request;
-			$reserve=['page','index','order','limit'];
 			$model = new $this->modelClass;
 			foreach ($_GET as $key => $value) {
-				if (!$model->hasAttribute($key)&&!in_array($key,$reserve)) {
+				if (!$model->hasAttribute($key)) {
 					throw new \yii\web\HttpException(404, 'Atributo invalido :' . $key);
 				}
 			}
 			try {
-			   	$query = $model->find();
-			   	$range=['id'];
+			   $query = $model->find();
 				foreach ($_GET as $key => $value) {
-					if(!in_array($key,$reserve)){
-						if (in_array($key,$range)) {
-							$limit = explode('-',$value);
-							$query->andWhere(['between', $key,$limit[0],$limit[1]]);
-						}else{
-							$query->andWhere(['like', $key, $value]);
-						}
+					if ($key != 'id') {
+						$query->andWhere(['=', $key, $value]);
+					}
+					if ($key == 'id') {
+						$agevalue = explode('-',$value);
+						$query->andWhere(['between', $key,$agevalue[0],$agevalue[1]]);
 					}
 				}
-				$id=($request->get('index'))?$request->get('index'):'id';
-				$sort=($request->get('order')=='asc')?SORT_ASC:SORT_DESC;
+
 				$provider = new \yii\data\ActiveDataProvider([
 					'query' => $query,
 					'sort' => [
 						'defaultOrder' => [
-							$id=>$sort
+							'id'=> SORT_DESC
 						]
 					],
 				  	'pagination' => [
-						'defaultPageSize' => 20,'page'=>(isset($_GET['page']))?intval($_GET['page'])-1:0
+						'defaultPageSize' => 20,
 					],
 				]);
 			} catch (Exception $ex) {

@@ -16,17 +16,13 @@ use Yii;
  */
 class RecursosHasSources extends \yii\db\ActiveRecord
 {
-    /**
-     * @inheritdoc
-     */
+
     public static function tableName()
     {
         return 'recursos_has_sources';
     }
 
-    /**
-     * @inheritdoc
-     */
+
     public function rules()
     {
         return [
@@ -38,9 +34,7 @@ class RecursosHasSources extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
+
     public function attributeLabels()
     {
         return [
@@ -50,17 +44,11 @@ class RecursosHasSources extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getRec()
     {
         return $this->hasOne(Recursos::className(), ['id' => 'rec_id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getSrc()
     {
         return $this->hasOne(RecursosSources::className(), ['id' => 'src_id']);

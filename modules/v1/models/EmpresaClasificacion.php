@@ -19,17 +19,13 @@ use Yii;
  */
 class EmpresaClasificacion extends \yii\db\ActiveRecord
 {
-    /**
-     * @inheritdoc
-     */
+
     public static function tableName()
     {
         return 'empresa_clasificacion';
     }
 
-    /**
-     * @inheritdoc
-     */
+
     public function rules()
     {
         return [
@@ -43,9 +39,7 @@ class EmpresaClasificacion extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
+
     public function attributeLabels()
     {
         return [
@@ -57,25 +51,16 @@ class EmpresaClasificacion extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getCla()
     {
         return $this->hasOne(Clasificacion::className(), ['id' => 'cla_id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getEmp()
     {
         return $this->hasOne(Empresa::className(), ['id' => 'emp_id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getPer()
     {
         return $this->hasOne(Perfil::className(), ['id' => 'per_id']);
