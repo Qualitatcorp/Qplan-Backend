@@ -72,8 +72,8 @@ class PsicologicopcaController extends Controller
     $client = new SoapClient( $this->url);
     $response =  $client->GetResult (
       array(
-      //'codigoPca' => $survey['codpca'],
-      'codigoPca' =>  'e129fe4a-8bcb-4f26-9588-abaa34dde49e',
+      'codigoPca' => $survey['codpca'],
+      // 'codigoPca' =>  'e129fe4a-8bcb-4f26-9588-abaa34dde49e',
       'repCod'=>'5ccf4857-2691-4eaf-b2e0-f7d42375691c' 
       ) 
     );
