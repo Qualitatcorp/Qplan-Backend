@@ -48,6 +48,11 @@ class UserAuthentication extends \yii\db\ActiveRecord
         ];
     }
 
+    public function extraFields()
+    {
+        return ['client','user'];
+    }
+
     public function getClient()
     {
         return $this->hasOne(UserClient::className(), ['client_id' => 'client_id']);
