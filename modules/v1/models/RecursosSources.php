@@ -71,14 +71,13 @@ class RecursosSources extends \yii\db\ActiveRecord
         $this->type =  $file->type;
         $this->title = $file->baseName;
         if($this->save()){
-            
             $nombre = $this->id.'-'.\Yii::$app->security->generateRandomString(). '.' . $file->extension;
             $ruta_guardado  = '../..'.\Yii::$app->params['url_frontend'].'/src/' . $nombre;
             $src = \Yii::$app->params['url_frontend'].'/src/' . $nombre;
             $file->saveAs($ruta_guardado);
             $this->src = $src;
             $this->save();
-            return $this->id;
+            return true;
         }else{
             return false;
         }    

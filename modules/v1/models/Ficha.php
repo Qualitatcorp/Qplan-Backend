@@ -88,20 +88,19 @@ class Ficha extends \yii\db\ActiveRecord
 
     public function getAvgpractica()
     {
-            return FichaPractica::findBySql('SELECT AVG(nota) FROM `ficha_practica` WHERE `ficha_practica`.`fic_id` = :id
-',[':id'=>$this->id])->One();
         if(in_array("FINALIZADO PRACTICA",explode(',',$this->proceso))){
+            return $this->getFicpracticas()->average('nota');
         }else{
-            return ['NO'];
+            return null;
         }
     }
 
     public function getAvgteorica()
     {        
         if(in_array("FINALIZADO TEORICO",explode(',',$this->proceso))){
-            return "hola";
+            return $this->getFicteoricas()->average('nota');
         }else{
-            return ['NO'];
+            return null;
         }
     }
 
