@@ -32,7 +32,7 @@ class RecursosSources extends \yii\db\ActiveRecord
         return [
             [['src', 'type'], 'required'],
             [['type'], 'string'],
-            [['src'], 'string', 'max' => 128],
+            [['src'], 'string', 'max' => 255],
             [['title'], 'string', 'max' => 256],
             [['src'], 'unique'],
            

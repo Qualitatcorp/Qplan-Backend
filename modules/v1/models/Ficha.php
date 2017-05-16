@@ -54,7 +54,7 @@ class Ficha extends \yii\db\ActiveRecord
 
     public function extraFields()
     {
-        return ['ot','trabajador','ficpracticas','modulos','ficpracticas','ficteoricas','modtercero'];
+        return ['ot','trabajador','ficpracticas','modulos','ficpracticas','ficteoricas','modtercero','avgpractica','avgteorica'];
     }
 
     public function getOt()
@@ -85,4 +85,24 @@ class Ficha extends \yii\db\ActiveRecord
     {
         return $this->hasMany(PerfilModulo::className(), ['id' => 'mod_id'])->viaTable('ficha_practica', ['fic_id' => 'id']);
     }
+
+    public function getAvgpractica()
+    {
+            return FichaPractica::findBySql('SELECT AVG(nota) FROM `ficha_practica` WHERE `ficha_practica`.`fic_id` = :id
+',[':id'=>$this->id])->One();
+        if(in_array("FINALIZADO PRACTICA",explode(',',$this->proceso))){
+        }else{
+            return ['NO'];
+        }
+    }
+
+    public function getAvgteorica()
+    {        
+        if(in_array("FINALIZADO TEORICO",explode(',',$this->proceso))){
+            return "hola";
+        }else{
+            return ['NO'];
+        }
+    }
+
 }
