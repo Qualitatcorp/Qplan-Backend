@@ -11,6 +11,17 @@ class PsicologicopcaController extends Controller
 
 
   public $url = 'https://timshr.com/services/PcaService.svc?singleWsdl' ;    
+  public function behaviors()
+    {
+      return \yii\helpers\ArrayHelper::merge(parent::behaviors(),[
+          'authenticator'=>[
+              'class' => \yii\filters\auth\HttpBearerAuth::className()  
+          ],
+          'authorization'=>[
+              'class' => \app\components\Authorization::className(),
+          ],
+      ]);
+  }
 
   public function actionCreate()
   {
