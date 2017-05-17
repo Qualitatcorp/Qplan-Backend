@@ -14,7 +14,7 @@ public function actions()
     $actions = parent::actions();
 
     // disable the "delete" and "create" actions
-    unset($actions['create'],$actions['index']);
+    unset($actions['create']);
 
      
     return $actions;
@@ -43,21 +43,13 @@ public function actions()
 			$model->attributes=$request;
 			$model->file = UploadedFile::getInstancesByName('file');
 			if ($model->file == null){
-				throw new \yii\web\HttpException(500, 'Error interno del sistema.');
-			} 
-
-
-			if ($model->upload()){
-
-				return array('status'=>1,'data'=>array_filter($model->attributes));
+				$model->save();
+				return $model;
 			}else{
-				throw new \yii\web\HttpException(500, 'Error interno del sistema.');
-			}
-
+				$model->upload();
+				return $model;
+			} 
 		}
-
-
-
 	}
 
 

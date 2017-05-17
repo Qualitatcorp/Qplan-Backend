@@ -72,7 +72,7 @@ class OrdenTrabajo extends \yii\db\ActiveRecord
 
     public function extraFields()
     {
-        return ['trabajador','mandante','fichas','solicitud','empresa','especialidad','perfil','countfic','counttra','usuario'];
+        return ['trabajador','mandante','fichas','solicitud','empresa','especialidad','perfil','countfic','counttra','usuario','modpractica'];
     }
 
     public function getTrabajador()
@@ -106,7 +106,6 @@ class OrdenTrabajo extends \yii\db\ActiveRecord
         return $this->hasOne(OrdenTrabajoSolicitud::className(), ['id' => 'sol_id']);
     }
 
-
     public function getEmpresa()
     {
         return $this->hasOne(Empresa::className(), ['id' => 'emp_id']);
@@ -121,6 +120,12 @@ class OrdenTrabajo extends \yii\db\ActiveRecord
     public function getPerfil()
     {
         return $this->hasOne(Perfil::className(), ['id' => 'per_id']);
+    }
+
+    public function getModpractica()
+    {
+        // return $this->hasMany(PerfilModulo::className(),['per_id'=>'id'])->where('FIND_IN_SET ("PRACTICA",evaluacion)')->via('perfil');
+        return PerfilModulo::findBySql("SELECT * FROM perfil_modulo WHERE per_id = :id AND FIND_IN_SET('PRACTICA', evaluacion)",[':id'=>$this->per_id])->all();
     }
 
     // public function extraFields()

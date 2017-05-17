@@ -75,6 +75,7 @@ $config = [
 						'v1/ficharespuesta',
 						'v1/fichateorico',
 						'v1/fichatercero',
+						'v1/fichatercerosources',
 						'v1/ordentrabajo',
 						'v1/ordentrabajosolicitud',
 						'v1/ordentrabajotrabajador',
@@ -99,7 +100,6 @@ $config = [
 						'v1/userclient',
 						'v1/userresource',
 						'v1/userresourcechildren',
-						'v1/fichatercero',
 						'v1/provider',
 						'v1/providermetodo'
 					],
