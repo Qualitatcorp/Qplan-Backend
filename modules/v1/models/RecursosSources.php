@@ -69,7 +69,7 @@ class RecursosSources extends \yii\db\ActiveRecord
         $file = $this->file[0]; //el parametro esta definido para recibir mas de un archivo, pero trabajaremos con uno 
         $this->src = \Yii::$app->security->generateRandomString(); 
         $this->type =  $file->type;
-        $this->title = $file->baseName;
+        $this->title = $file->baseName.'.'.$file->extension;
         if($this->save()){
             $nombre = $this->id.'-'.\Yii::$app->security->generateRandomString(). '.' . $file->extension;
             $ruta_guardado  = '../..'.\Yii::$app->params['url_frontend'].'/src/' . $nombre;
