@@ -7,8 +7,10 @@
 		
 	</div>
 	<div class="row">
-		<h5 class = "text-center">LISTADO DE TRABAJADORES</h5>
-		<h5 class = "text-center">ORDEN DE TRABAJO Nº47</h5>	 	 
+		<h4 class = "text-center">LISTADO DE TRABAJADORES</h4>
+		<h4 class = "text-center ">ORDEN DE TRABAJO Nº <?php echo  $ot->id ?></h4>	
+		<br>
+		<h5 class = "text-center text-uppercase">ESPECIALIDAD <?php echo  $ot->especialidad->nombre ?></h5>	 	 	 
 	</div>
 	<div class="row">
 		<br>
@@ -17,33 +19,40 @@
 				<tr>
 					<th>RUT</th>
 					<th>TRABAJADOR</th>
-					<th>ESPECIALIDAD</th>
+					 
 					<th>FIRMA</th>
 				</tr>
 			</thead>
 			<tbody>
-		<?php 	
-			foreach ($ot-> as $key => $value) {
-				?>
-				 <tr>
-				
-					<td><?php print_r($value[]);?> </td>
-					<td></td>
-				</tr>
-		 <?php 	}
-		 ?>
+			<?php 
+				if(!$ot->trabajador){
+			?>
 				<tr>
-					<td>17.081.014-7</td>
-					<td>Daniel Rivera</td>
-					<td>Mecanico</td>
-					<td></td>
+		 			
+					<td>sin registro</td> 
+					<td>sin registro</td>
+					<td>sin registro</td>
 				</tr>
-			
+			<?php
+			}else{
+				foreach ( $ot->trabajador as $key => $t) {  ?>
+	 			<tr>
+		 			<td><?php   echo $t->rut; ?></td>	 
+		 			<td><?php   echo  $t->nombre. ' ' . $t->paterno. ' ' .  $t->materno ; ?></td>
+				
+					<td></td> 
+				</tr>
+	 			<?php }// for each
+	 			
+	 		} //if trsabajador
+	 		?> 
+			 
 				 
 
 			</tbody>
 			
 		</table>
+		  
 	</div>
 
 </div>

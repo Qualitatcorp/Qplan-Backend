@@ -131,7 +131,7 @@ $config = [
 				'POST v1/psicologicopca/getresult' => 'v1/psicologicopca/getresult',
 				'v1/psicologicopca/<action:\w+>' => 'v1/psicologicopca/<action:\w+>',
 				'POST authentication/<action:\w+>' => 'authentication/<action>',
-				'report/<controller:\w+>' => 'report/<controller>/index',
+				'report/<controller:\w+>/<id_ot:\d+>' => 'report/<controller>/index',
 				'report/<controller:\w+>/<action:\w+>' => 'report/<controller>/<action>',
 				 
 			],
