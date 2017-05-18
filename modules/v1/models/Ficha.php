@@ -54,7 +54,7 @@ class Ficha extends \yii\db\ActiveRecord
 
     public function extraFields()
     {
-        return ['ot','trabajador','ficpracticas','modulos','ficpracticas','ficteoricas','modtercero','avgpractica','avgteorica'];
+        return ['ot','trabajador','ficpracticas','modulos','ficpracticas','ficteoricas','ficcurricular','modtercero','avgpractica','avgteorica','notas'];
     }
 
     public function getOt()
@@ -96,12 +96,42 @@ class Ficha extends \yii\db\ActiveRecord
     }
 
     public function getAvgteorica()
-    {        
+    {
         if(in_array("FINALIZADO TEORICO",explode(',',$this->proceso))){
+            $fts = $this->getFicteoricas()->where('nota IS NULL')->all();
+            foreach ($fts as $ft) {
+                $ft->nota=(empty($ft->puntajeAcierto))?0:$ft->puntajeAcierto;
+                $ft->save();
+            }
             return $this->getFicteoricas()->average('nota');
         }else{
             return null;
         }
     }
+
+    public function getFiccurricular()
+    {
+        return $this->hasOne(FichaCurricular::className(), ['fic_id' => 'id']);
+    }
+
+    public function getNotas()
+    {
+        $list=[];
+        $nota=$this->avgpractica;
+        if(!empty($nota)){
+            $list['practica']=(float)$nota;
+        }
+        $nota=$this->avgteorica;
+        if(!empty($nota)){
+            $list['teorica']=(float)$nota;
+        }
+        $nota=$this->ficcurricular;
+        if(!empty($nota)){
+            $list['curricular']=(float)$nota->nota;
+        }
+
+        return $list;
+    }
+
 
 }
