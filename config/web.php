@@ -1,6 +1,4 @@
 <?php
-
-use kartik\mpdf\Pdf;
 $params = require(__DIR__ . '/params.php');
 
 $config = [
@@ -74,6 +72,7 @@ $config = [
 						'v1/fichapractica',
 						'v1/ficharespuesta',
 						'v1/fichateorico',
+						'v1/fichacurricular',
 						'v1/fichatercero',
 						'v1/fichatercerosources',
 						'v1/ordentrabajo',
@@ -136,14 +135,7 @@ $config = [
 				'report/<controller:\w+>/<action:\w+>' => 'report/<controller>/<action>',
 				 
 			],
-		],
-		'pdf' => [
-	        'class' => Pdf::classname(),
-	        'format' => Pdf::FORMAT_A4,
-	        'orientation' => Pdf::ORIENT_PORTRAIT,
-	        'destination' => Pdf::DEST_BROWSER,
-	        // refer settings section for all configuration options
-	    ],
+		]
 	],
 	'modules' => [
 		'v1' => [

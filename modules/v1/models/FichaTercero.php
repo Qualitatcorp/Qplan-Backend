@@ -17,6 +17,7 @@ use Yii;
  * @property Ficha $fic
  * @property PerfilModulo $mod
  * @property Provider $prov
+ * @property FichaTerceroSources[] $fichaTerceroSources
  */
 class FichaTercero extends \yii\db\ActiveRecord
 {
@@ -81,5 +82,13 @@ class FichaTercero extends \yii\db\ActiveRecord
     public function getProv()
     {
         return $this->hasOne(Provider::className(), ['id' => 'prov_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getFichaTerceroSources()
+    {
+        return $this->hasMany(FichaTerceroSources::className(), ['fict_id' => 'id']);
     }
 }
