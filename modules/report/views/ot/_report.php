@@ -1,3 +1,5 @@
+ 
+
 <div class="container">
 	<div class="row">
 		<div class="col-xs-offset-8 col-xs-3">
@@ -14,13 +16,13 @@
 	</div>
 	<div class="row">
 		<br>
-		<table class="table table-striped">
-			<thead>
-				<tr>
-					<th>RUT</th>
-					<th>TRABAJADOR</th>
+		<table class="table table-striped table-bordered table-condensed">
+			<thead  >
+				<tr  >
+					<th style="width:18%;text-align:center; " >RUT</th>
+					<th  style="width:46%;text-align:center;" >TRABAJADOR</th>
 					 
-					<th>FIRMA</th>
+					<th style="width:36%;text-align:center;" >FIRMA</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -37,13 +39,13 @@
 			}else{
 				foreach ( $ot->trabajador as $key => $t) {  ?>
 	 			<tr>
-		 			<td><?php   echo $t->rut; ?></td>	 
-		 			<td><?php   echo  $t->nombre. ' ' . $t->paterno. ' ' .  $t->materno ; ?></td>
+		 			<td  style=" text-align:right; padding-right: 20px; ";><?php   echo $t->rut; ?></td>	 
+		 			<td  ><?php   echo  $t->nombre. ' ' . $t->paterno. ' ' .  $t->materno ; ?></td>
 				
 					<td></td> 
 				</tr>
 	 			<?php }// for each
-	 			
+
 	 		} //if trsabajador
 	 		?> 
 			 
@@ -52,7 +54,7 @@
 			</tbody>
 			
 		</table>
-		  
+		 
 	</div>
 
 </div>

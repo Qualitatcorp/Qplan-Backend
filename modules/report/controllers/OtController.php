@@ -24,24 +24,34 @@ class OtController extends Controller
     //         ],
     //     ]);
     // }
-
+   
     public function actionIndex($id_ot)
     {
+       // style='padding-left:44%'
+          $footer = " <div> <p style='width:100px; text-aling:center; margin:0 auto;'>Página {PAGENO}  de {nb} </p></div>";
+
+
+
         $ot = OrdenTrabajo::findOne($id_ot);
-        if( $ot){
+        if($ot){
             
+            $style=file_get_contents('http://127.0.0.1/mpdf-bootstrap.min.css');
+            //  $this->renderPartial('_report',array('ot'=>$ot  ),false );
+            $report =$this->renderPartial('_report',array('ot'=>$ot  ),true);
+            
+            $mpdf = new \Mpdf\Mpdf();
+            $mpdf->SetTitle('Orden de Trabajo Nº'. $ot->id);
+            $mpdf->SetAuthor('Qualitat');
+            $mpdf->WriteHTML($style,1);
+            $mpdf->WriteHTML($report ,2);
+            $mpdf->SetHTMLFooter($footer);
+           
+            $mpdf->Output();
         }else{
            throw new \yii\web\NotFoundHttpException();
            
         }
-        $style=file_get_contents('http://127.0.0.1/mpdf-bootstrap.min.css');
-        //  $this->renderPartial('_report',array('ot'=>$ot  ),false );
-        $report =$this->renderPartial('_report',array('ot'=>$ot  ),true);
-        
-        $mpdf = new \Mpdf\Mpdf();
-        $mpdf->WriteHTML($style,1);
-        $mpdf->WriteHTML( $report ,2);
-        $mpdf->Output();
+       
     }
     private function pre($s){
        echo "<pre>";
