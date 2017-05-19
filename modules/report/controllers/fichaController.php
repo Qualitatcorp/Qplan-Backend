@@ -2,18 +2,18 @@
 
 namespace app\modules\report\controllers;
 use app\modules\v1\models\OrdenTrabajo;
-
+use app\modules\v1\models\Ficha;
 use yii\web\Controller;
 
 /**
  * Default controller for the `report` module
  */
-class OtController extends Controller
+class FichaController extends Controller
 {
-    // /**
-    //  * Renders the index view for the module
-    //  * @return string
-    //  */
+    /**
+     * Renders the index view for the module
+     * @return string
+     */
     // public function behaviors()
     // {
     //     return \yii\helpers\ArrayHelper::merge(parent::behaviors(),[
@@ -26,23 +26,22 @@ class OtController extends Controller
     //     ]);
     // }
    
-    public function actionIndex($id)
+    public function actionPractica($id)
     {
-       // style='padding-left:44%'
-       $footer = " <div> <p style='width:100px; text-aling:center; margin:0 auto;'>Página {PAGENO}  de {nb} </p></div>";
-
-
-
-        $ot = OrdenTrabajo::findOne($id);
-        if($ot){
-            
+        // style='padding-left:44%'
+        $footer = " <div> <p style='width:100px; text-aling:center; margin:0 auto;'>Página {PAGENO}  de {nb} </p></div>";
+        //consulta
+        $ficha = Ficha::findOne($id);
+        // verifica si existe
+        if($ficha){
             $style=file_get_contents('http://127.0.0.1/mpdf-bootstrap.min.css');
-            //  $this->renderPartial('_report',array('ot'=>$ot  ),false );
-            $report =$this->renderPartial('_report',array('ot'=>$ot  ),true);
-            
+            $report = $this->renderPartial('_practica',array('ficha'=>$ficha),true);
+            $header = $this->renderPartial('_headerpractica',array('ficha'=>$ficha),true);
             $mpdf = new \Mpdf\Mpdf();
-            $mpdf->SetTitle('Orden de Trabajo Nº'. $ot->id);
+         
+            $mpdf->SetTitle('Evaluacion Practica');
             $mpdf->SetAuthor('Qualitat');
+            $mpdf->SetHTMLHeader($header);
             $mpdf->WriteHTML($style,1);
             $mpdf->WriteHTML($report ,2);
             $mpdf->SetHTMLFooter($footer);
