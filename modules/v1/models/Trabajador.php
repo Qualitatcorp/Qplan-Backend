@@ -155,6 +155,8 @@ class Trabajador extends \yii\db\ActiveRecord
     public function getPonderacion()
     {
         $meses=$this->meses;
+        if(empty($meses))
+            return null;
         if($meses<12*16){
             return $this->notaBase+($meses/(12*16))*(1-$this->notaBase);
         }else{

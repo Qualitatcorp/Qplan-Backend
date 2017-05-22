@@ -4,28 +4,12 @@ namespace app\modules\v1\models;
 
 use Yii;
 
-/**
- * This is the model class for table "ficha".
- *
- * @property string $id
- * @property string $ot_id
- * @property string $tra_id
- * @property string $proceso
- * @property string $creacion
- *
- * @property OrdenTrabajo $ot
- * @property Trabajador $tra
- * @property FichaPractica[] $fichaPracticas
- * @property PerfilModulo[] $mods
- */
 class Ficha extends \yii\db\ActiveRecord
 {
-
     public static function tableName()
     {
         return 'ficha';
     }
-
 
     public function rules()
     {
@@ -33,13 +17,12 @@ class Ficha extends \yii\db\ActiveRecord
             [['ot_id', 'tra_id'], 'required'],
             [['ot_id', 'tra_id'], 'integer'],
             [['proceso'], 'string'],
+            [['nota'], 'number'],
             [['creacion'], 'safe'],
-            // [['ot_id', 'tra_id'], 'unique', 'targetAttribute' => ['ot_id', 'tra_id'], 'message' => 'The combination of Ot ID and Tra ID has already been taken.'],
             [['ot_id'], 'exist', 'skipOnError' => true, 'targetClass' => OrdenTrabajo::className(), 'targetAttribute' => ['ot_id' => 'id']],
             [['tra_id'], 'exist', 'skipOnError' => true, 'targetClass' => Trabajador::className(), 'targetAttribute' => ['tra_id' => 'id']],
         ];
     }
-
 
     public function attributeLabels()
     {
@@ -48,13 +31,28 @@ class Ficha extends \yii\db\ActiveRecord
             'ot_id' => 'Ot ID',
             'tra_id' => 'Tra ID',
             'proceso' => 'Proceso',
+            'nota' => 'Nota',
             'creacion' => 'Creacion',
         ];
     }
 
     public function extraFields()
     {
-        return ['ot','trabajador','ficpracticas','modulos','ficpracticas','ficteoricas','ficcurricular','modtercero','avgpractica','avgteorica','notas'];
+        return [
+        'ot',
+        'trabajador',
+        'ficpracticas',
+        'modulos',
+        'ficpracticas',
+        'ficteoricas',
+        'ficcurricular',
+        'fictercero',
+        'modtercero',
+        'avgpractica',
+        'avgteorica',
+        'notas',
+        'final'
+        ];
     }
 
     public function getOt()
@@ -80,10 +78,14 @@ class Ficha extends \yii\db\ActiveRecord
     {
         return $this->hasMany(FichaTeorico::className(), ['fic_id' => 'id']);
     }
+    public function getFictercero()
+    {
+        return $this->hasMany(FichaTercero::className(), ['fic_id' => 'id']);
+    }
 
     public function getModulos()
     {
-        return $this->hasMany(PerfilModulo::className(), ['id' => 'mod_id'])->viaTable('ficha_practica', ['fic_id' => 'id']);
+        return PerfilModulo::findBySql("SELECT * FROM perfil_modulo WHERE per_id IN (SELECT per_id FROM orden_trabajo WHERE id=:id)",[':id'=>$this->ot_id])->all();
     }
 
     public function getAvgpractica()
@@ -128,10 +130,60 @@ class Ficha extends \yii\db\ActiveRecord
         $nota=$this->ficcurricular;
         if(!empty($nota)){
             $list['curricular']=(float)$nota->nota;
+        }else{
+            $p=$this->trabajador->ponderacion;
+            if(!empty($p)){
+                $list['curricular']=(float)$p;
+            }
         }
-
+        $tercero=$this->fictercero;
+        if(!empty($tercero)){
+            foreach ($tercero as $model) {
+                $modulo=$model->modulo;
+                if($modulo->nivel="PRIMARIO"){
+                    $list['tercero'][$model->modulo->nombre]=(float)$model->nota;
+                }else{
+                    if($modulo->nivel="SECUNDARIO"){
+                        if(empty($list['tercero'][$model->modulo->nombre])){
+                            $list['tercero'][$model->modulo->nombre]=$model->nota;
+                        }
+                        $list['tercero'][$model->modulo->nombre]+=",".$model->nota;
+                    }   
+                }
+            }
+        }
         return $list;
     }
 
+    public function getFinal()
+    {
+        if(empty($this->nota)){
+            if(strpos($this->proceso,"TERMINADO")!==false){
+                $valores=array();
+                // \Underscore\Types\Arrays::
 
+                $notas=$this->notas;
+                foreach ($notas as $n) {
+                    if(is_numeric($n)){
+                        $valores[]=$n;
+                    }else{
+                        if(is_array($n)){
+                            foreach ($n as $key => $value) {
+                                $valores[]=$value;
+                            }
+                        }
+                    }
+                }
+                $sum=\Underscore\Types\Arrays::sum($valores);
+                $this->nota=(float)$sum/count($valores);
+                $this->save();
+                return $this->nota;
+                
+            }else{
+
+            }
+        }else{
+            return $this->nota;
+        }
+    }
 }

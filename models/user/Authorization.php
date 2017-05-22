@@ -4,28 +4,13 @@ namespace app\models\user;
 
 use Yii;
 
-/**
- * This is the model class for table "user_authorization".
- *
- * @property string $user_id
- * @property integer $res_id
- *
- * @property User $user
- * @property UserResource $res
- */
 class Authorization extends \yii\db\ActiveRecord
 {
-    /**
-     * @inheritdoc
-     */
     public static function tableName()
     {
         return 'user_authorization';
     }
 
-    /**
-     * @inheritdoc
-     */
     public function rules()
     {
         return [
@@ -36,9 +21,6 @@ class Authorization extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
     public function attributeLabels()
     {
         return [
@@ -47,17 +29,11 @@ class Authorization extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getUser()
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getResources()
     {
         return $this->hasOne(UserResource::className(), ['id' => 'res_id']);

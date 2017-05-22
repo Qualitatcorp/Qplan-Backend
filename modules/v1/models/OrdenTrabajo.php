@@ -4,30 +4,6 @@ namespace app\modules\v1\models;
 
 use Yii;
 
-/**
- * This is the model class for table "orden_trabajo".
- *
- * @property string $id
- * @property integer $emp_id
- * @property integer $esp_id
- * @property string $per_id
- * @property string $sol_id
- * @property string $personal
- * @property string $tipo
- * @property string $inicio
- * @property string $termino
- * @property string $direccion
- * @property string $estado
- *
- * @property Ficha[] $fichas
- * @property OrdenTrabajoSolicitud $sol
- * @property Empresa $emp
- * @property Especialidad $esp
- * @property OrdenTrabajoSolicitud $sol0
- * @property Perfil $per
- * @property OrdenTrabajoTrabajador[] $ordenTrabajoTrabajadors
- * @property Trabajador[] $tras
- */
 class OrdenTrabajo extends \yii\db\ActiveRecord
 {
     public static function tableName()
@@ -72,7 +48,22 @@ class OrdenTrabajo extends \yii\db\ActiveRecord
 
     public function extraFields()
     {
-        return ['trabajador','mandante','fichas','solicitud','empresa','especialidad','perfil','countfic','counttra','usuario','modpractica'];
+        return [
+        'trabajador',
+        'mandante',
+        'fichas',
+        'solicitud',
+        'empresa',
+        'especialidad',
+        'perfil',
+        'countfic',
+        'counttra',
+        'usuario',
+        'modpractica',
+        'modetercero',
+        'fichanotas',
+        'modulos'
+        ];
     }
 
     public function getTrabajador()
@@ -111,7 +102,6 @@ class OrdenTrabajo extends \yii\db\ActiveRecord
         return $this->hasOne(Empresa::className(), ['id' => 'emp_id']);
     }
 
-
     public function getEspecialidad()
     {
         return $this->hasOne(Especialidad::className(), ['id' => 'esp_id']);
@@ -122,54 +112,42 @@ class OrdenTrabajo extends \yii\db\ActiveRecord
         return $this->hasOne(Perfil::className(), ['id' => 'per_id']);
     }
 
+    public function getModulos()
+    {
+        return PerfilModulo::findBySql("SELECT * FROM perfil_modulo WHERE per_id = :id",[':id'=>$this->per_id])->all();
+    }
+
     public function getModpractica()
     {
-        // return $this->hasMany(PerfilModulo::className(),['per_id'=>'id'])->where('FIND_IN_SET ("PRACTICA",evaluacion)')->via('perfil');
         return PerfilModulo::findBySql("SELECT * FROM perfil_modulo WHERE per_id = :id AND FIND_IN_SET('PRACTICA', evaluacion)",[':id'=>$this->per_id])->all();
     }
 
-    // public function extraFields()
-    // {
-    //     return ['trabajador','mandante','fichas','solicitud','empresa','especialidad','perfil','countfichas','usuario'];
-    // }
+    public function getModtercero()
+    {
+        return PerfilModulo::findBySql("SELECT * FROM perfil_modulo WHERE per_id = :id AND FIND_IN_SET('TERCERO', evaluacion)",[':id'=>$this->per_id])->all();
+    }
 
-    // public function getFichas()
-    // {
-    //     return $this->hasMany(Ficha::className(), ['ot_id' => 'id']);
-    // }
+    public function getModprimario()
+    {
+        return PerfilModulo::findBySql("SELECT * FROM perfil_modulo WHERE per_id = :id AND FIND_IN_SET('PRIMARIO', nivel)",[':id'=>$this->per_id])->all();
+    }
 
-    // public function getSol()
-    // {
-    //     return $this->hasOne(OrdenTrabajoSolicitud::className(), ['id' => 'sol_id']);
-    // }
+    public function getFichanotas()
+    {
+        $list = array();
+        $fichas=$this->fichas;
+        foreach ($fichas as $model) {
+            $list[]=$model->getAttributes(['id','tra_id','proceso','creacion','final','notas']) ;
+        }
+        return $list;
+    }
 
-    // public function getEmp()
-    // {
-    //     return $this->hasOne(Empresa::className(), ['id' => 'emp_id']);
-    // }
+    public function getFinal()
+    {
+        if(empty($this->nota)){
 
-    // public function getEsp()
-    // {
-    //     return $this->hasOne(Especialidad::className(), ['id' => 'esp_id']);
-    // }
-
-    // public function getSol0()
-    // {
-    //     return $this->hasOne(OrdenTrabajoSolicitud::className(), ['id' => 'sol_id']);
-    // }
-
-    // public function getPer()
-    // {
-    //     return $this->hasOne(Perfil::className(), ['id' => 'per_id']);
-    // }
-
-    // public function getOrdenTrabajoTrabajadors()
-    // {
-    //     return $this->hasMany(OrdenTrabajoTrabajador::className(), ['ot_id' => 'id']);
-    // }
-
-    // public function getTras()
-    // {
-    //     return $this->hasMany(Trabajador::className(), ['id' => 'tra_id'])->viaTable('orden_trabajo_trabajador', ['ot_id' => 'id']);
-    // }
+        }else{
+            return $this->nota;
+        }
+    }
 }
