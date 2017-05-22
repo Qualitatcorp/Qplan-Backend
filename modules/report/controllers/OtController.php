@@ -39,8 +39,18 @@ class OtController extends Controller
             $style=file_get_contents('http://127.0.0.1/mpdf-bootstrap.min.css');
             //  $this->renderPartial('_report',array('ot'=>$ot  ),false );
             $report =$this->renderPartial('_report',array('ot'=>$ot  ),true);
-            
-            $mpdf = new \Mpdf\Mpdf();
+            $mpdf = new \Mpdf\Mpdf(array(
+                'mode' => '',
+                'format' => 'Letter',
+                'default_font_size' => 0,
+                'default_font' => '',
+                'margin_left' => 10,
+                'margin_right' => 10,
+                'margin_top' => 10,
+                'margin_bottom' => 30,
+                'margin_header' => 20,
+                'margin_footer' => 9,
+                'orientation' => 'l'));
             $mpdf->SetTitle('Orden de Trabajo Nº'. $ot->id);
             $mpdf->SetAuthor('Qualitat');
             $mpdf->WriteHTML($style,1);
