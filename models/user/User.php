@@ -4,8 +4,8 @@ namespace app\models\user;
 
 use Yii;
 
-use app\models\user\Authentication;
-use app\models\user\Client;
+// use app\models\user\Authentication;
+// use app\models\user\Client;
 
 use yii\web\HttpException;
 
@@ -130,7 +130,6 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             $refresh=($auth['refresh']==='true');
         }
         $token = Authentication::GrantAccess($user->primaryKey,$cliente->primaryKey,$timeOut,$refresh);
-
         $access_token=[
             'access_token'=>$token->primaryKey,
             'token_type'=>'Bearer',
@@ -139,6 +138,18 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         ];
         if(!empty($token->refresh)){
             $access_token['refresh']=$token->refresh;
+        }
+        if(!empty($request->post("identity"))){
+            $sources=[];
+            $resources = explode(",", $request->post("identity"));
+            if(in_array("user",$resources)){
+                $sources['user']=$user;
+            }            
+            if(in_array("resources",$resources)){
+                $sources['resources']=$user->getResources()->with("children")->asArray()->all();
+            }
+            $access_token['scope']=$sources;
+
         }
         return $access_token;
         //Valida IP

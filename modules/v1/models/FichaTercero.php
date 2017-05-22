@@ -4,34 +4,13 @@ namespace app\modules\v1\models;
 
 use Yii;
 
-/**
- * This is the model class for table "ficha_tercero".
- *
- * @property string $id
- * @property string $fic_id
- * @property string $mod_id
- * @property string $prov_id
- * @property string $nota
- * @property string $identity
- *
- * @property Ficha $fic
- * @property PerfilModulo $mod
- * @property Provider $prov
- * @property FichaTerceroSources[] $fichaTerceroSources
- */
 class FichaTercero extends \yii\db\ActiveRecord
 {
-    /**
-     * @inheritdoc
-     */
     public static function tableName()
     {
         return 'ficha_tercero';
     }
 
-    /**
-     * @inheritdoc
-     */
     public function rules()
     {
         return [
@@ -45,9 +24,6 @@ class FichaTercero extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
     public function attributeLabels()
     {
         return [
@@ -60,34 +36,22 @@ class FichaTercero extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getFic()
+    public function getFicha()
     {
         return $this->hasOne(Ficha::className(), ['id' => 'fic_id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getMod()
+    public function getModulo()
     {
         return $this->hasOne(PerfilModulo::className(), ['id' => 'mod_id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getProv()
+    public function getProvider()
     {
         return $this->hasOne(Provider::className(), ['id' => 'prov_id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getFichaTerceroSources()
+    public function getSources()
     {
         return $this->hasMany(FichaTerceroSources::className(), ['fict_id' => 'id']);
     }

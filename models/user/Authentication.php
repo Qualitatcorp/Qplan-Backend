@@ -6,17 +6,6 @@ use Yii;
 
 use yii\web\HttpException;
 
-/**
- * This is the model class for table "user_Authentication".
- *
- * @property string $token
- * @property string $refresh
- * @property string $user_id
- * @property string $client_id
- *
- * @property UserClient $client
- * @property User $user
- */
 class Authentication extends \yii\db\ActiveRecord
 {
     public static function tableName()
@@ -26,23 +15,27 @@ class Authentication extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['token', 'user_id', 'client_id'], 'required'],
-            [['user_id', 'client_id','expire'], 'integer'],
-            [['token','refresh'], 'unique'],
+            [['token', 'expire', 'user_id', 'client_id'], 'required'],
+            [['start', 'expire', 'user_id', 'client_id'], 'integer'],
             [['token', 'refresh'], 'string', 'max' => 32],
+            [['refresh'], 'unique'],
             [['client_id'], 'exist', 'skipOnError' => true, 'targetClass' => Client::className(), 'targetAttribute' => ['client_id' => 'client_id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
+
     public function attributeLabels()
     {
         return [
             'token' => 'Token',
             'refresh' => 'Refresh',
+            'start' => 'Start',
+            'expire' => 'Expire',
             'user_id' => 'User ID',
             'client_id' => 'Client ID',
         ];
     }
+
     public static function GrantAccess($userId,$clientId,$expire_in,$refresh=false)
     {
         for ($i=0; $i < 5; $i++) {
@@ -50,6 +43,7 @@ class Authentication extends \yii\db\ActiveRecord
             $model->attributes=[
                 'token'=>\Yii::$app->security->generateRandomString(),
                 'refresh'=>($refresh)?\Yii::$app->security->generateRandomString():null,
+                'start'=>time(),
                 'expire'=>time()+$expire_in,
                 'user_id'=>$userId,
                 'client_id'=>$clientId
@@ -60,6 +54,7 @@ class Authentication extends \yii\db\ActiveRecord
         }
         throw new HttpException(401, "Error en credenciales intentelo denuevo.");
     }
+
     public static function findAccessToken($token)
     {
         return static::find()
@@ -67,6 +62,7 @@ class Authentication extends \yii\db\ActiveRecord
             ->andWhere(['>','expire',time()])
             ->one();
     }
+
     public static function findRefresh($refresh)
     {
         return static::find()
@@ -84,10 +80,12 @@ class Authentication extends \yii\db\ActiveRecord
         }
         return $expire_in;
     }
+
     public function getClient()
     {
         return $this->hasOne(UserClient::className(), ['client_id' => 'client_id']);
     }
+
     public function getUser()
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
