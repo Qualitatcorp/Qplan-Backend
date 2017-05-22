@@ -38,7 +38,7 @@ class FichaController extends Controller
             $style=file_get_contents('http://127.0.0.1/mpdf-bootstrap.min.css');
             $report = $this->renderPartial('_practica',array('ficha'=>$ficha),true);
             $header = $this->renderPartial('_headerpractica',array('ficha'=>$ficha),true);
-            $footer =  $this->renderPartial('_firma',array('ficha'=>$ficha),true);
+            $footer = $this->renderPartial('_firmaPractica');
             $mpdf = new \Mpdf\Mpdf(array(
                 'mode' => '',
                 'format' => 'Letter',

@@ -37,7 +37,7 @@
 				</tr>
 			<?php
 			}else{
-				foreach ( $ot->trabajador as $key => $t) {  ?>
+				foreach ( $ot->getTrabajador()->orderBy(['rut'=> SORT_ASC])->all() as $key => $t) {  ?>
 	 			<tr>
 		 			<td  style=" text-align:right; padding-right: 20px; ";><?php   echo $t->rut; ?></td>	 
 		 			<td  ><?php   echo  $t->nombre. ' ' . $t->paterno. ' ' .  $t->materno ; ?></td>
