@@ -16,7 +16,6 @@ foreach ( $ficha->fictercero as $key => $model) {
 	$arrayNotasTabla[$key] = array('nota' => $nota, 'ponderacion' =>  $ponderacion ); 
 }
 
-
 $NotaTecnica = ( ($ficha->notas['teorica'] + $ficha->notas['practica']) /2);
 $NotaCurricular = ($ficha->ficcurricular->nota * $ficha->ficcurricular->ponderacion);
 $arrayNotasTabla['curricular'] =   array('nota' => $NotaCurricular, 'ponderacion' =>  $ficha->ficcurricular->ponderacion );

@@ -64,6 +64,41 @@ class OtController extends Controller
         }
        
     }
+    public function actionDetalle($id)
+    {
+         // style='padding-left:44%'
+        $footer = " <div> <p style='width:100px; text-aling:center; margin:0 auto;'>Página {PAGENO}  de {nb} </p></div>";
+        $ot = OrdenTrabajo::findOne($id);
+        if($ot){
+
+            $style=file_get_contents('http://127.0.0.1/mpdf-bootstrap.min.css');
+                    //  $this->renderPartial('_report',array('ot'=>$ot  ),false );
+            $report =$this->renderPartial('detalle/_head',array('ot'=>$ot  ),true);
+            $mpdf = new \Mpdf\Mpdf(array(
+                'mode' => '',
+                'format' => 'Letter',
+                'default_font_size' => 0,
+                'default_font' => '',
+                'margin_left' => 0,
+                'margin_right' => 0,
+                'margin_top' => 10,
+                'margin_bottom' => 10,
+                'margin_header' => 10,
+                'margin_footer' => 10,
+                'orientation' => 'L'));
+            $mpdf->AddPage('L');
+            $mpdf->SetTitle('Orden de Trabajo Nº'. $ot->id);
+            $mpdf->SetAuthor('Qualitat');
+            $mpdf->WriteHTML($style,1);
+            $mpdf->WriteHTML($report ,2);
+            $mpdf->SetHTMLFooter($footer);
+
+            $mpdf->Output();
+        }else{
+         throw new \yii\web\NotFoundHttpException();
+
+     }
+ }
     private function pre($s){
        echo "<pre>";
        print_r($s);
