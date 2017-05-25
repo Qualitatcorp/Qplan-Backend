@@ -38,7 +38,7 @@ class OtController extends Controller
             
             $style=file_get_contents('http://127.0.0.1/mpdf-bootstrap.min.css');
             //  $this->renderPartial('_report',array('ot'=>$ot  ),false );
-            $report =$this->renderPartial('_report',array('ot'=>$ot  ),true);
+            $report =$this->renderPartial('listado/_report',array('ot'=>$ot  ),true);
             $mpdf = new \Mpdf\Mpdf(array(
                 'mode' => '',
                 'format' => 'Letter',
