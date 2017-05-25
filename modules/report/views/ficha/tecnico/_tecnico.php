@@ -4,6 +4,32 @@
 $teoricas = arraynota($ficha->ficteoricas); //las notas de las fichas las guardamos en un array
 $practicas = arraynota($ficha->ficpracticas);//las notas de las fichas las guardamos en un array
 $x = 0;
+$Ponderacion = null;
+//test
+$Ponderacion2 = null;
+$promedioFinal = null;
+
+foreach ( $ficha->fictercero as $key => $model) {
+	$ponderacion =  $model->modulo->ponderacion;
+	$key = $model->modulo->nombre;
+	$nota =  $model->nota  * $ponderacion;
+	$arrayNotasTabla[$key] = array('nota' => $nota, 'ponderacion' =>  $ponderacion ); 
+}
+
+
+$NotaTecnica = ( ($ficha->notas['teorica'] + $ficha->notas['practica']) /2);
+$NotaCurricular = ($ficha->ficcurricular->nota * $ficha->ficcurricular->ponderacion);
+$arrayNotasTabla['curricular'] =   array('nota' => $NotaCurricular, 'ponderacion' =>  $ficha->ficcurricular->ponderacion );
+$arrayNotasTabla['tecnica']	   =   array('nota' => ($NotaTecnica ), 'ponderacion' =>  1 );
+
+
+
+foreach ($arrayNotasTabla as $key => $v) {
+    $Ponderacion2 += $v['ponderacion'];
+    $promedioFinal +=  $v['nota'];
+}  
+echo nota($promedioFinal/$Ponderacion2);
+ //test
 foreach ($ficha->ot->modulos as $key => $value) {
 	$teorica = null;
 	$practica = null;
