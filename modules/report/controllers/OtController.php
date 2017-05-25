@@ -10,10 +10,10 @@ use yii\web\Controller;
  */
 class OtController extends Controller
 {
-    // /**
-    //  * Renders the index view for the module
-    //  * @return string
-    //  */
+    /**
+     * Renders the index view for the module
+     * @return string
+     */
     // public function behaviors()
     // {
     //     return \yii\helpers\ArrayHelper::merge(parent::behaviors(),[
@@ -26,7 +26,7 @@ class OtController extends Controller
     //     ]);
     // }
    
-    public function actionIndex($id)
+    public function actionListado($id)
     {
        // style='padding-left:44%'
        $footer = " <div> <p style='width:100px; text-aling:center; margin:0 auto;'>Página {PAGENO}  de {nb} </p></div>";
