@@ -52,22 +52,22 @@ class OrdenTrabajoSolicitud extends \yii\db\ActiveRecord
         ];
     }
 
+    public function extraFields()
+    {
+        return ['empresa','usuario'];
+    }
+
     public function getOrdenTrabajos()
     {
         return $this->hasMany(OrdenTrabajo::className(), ['sol_id' => 'id']);
     }
 
-    public function getOrdenTrabajos0()
-    {
-        return $this->hasMany(OrdenTrabajo::className(), ['sol_id' => 'id']);
-    }
-
-    public function getEmp()
+    public function getEmpresa()
     {
         return $this->hasOne(Empresa::className(), ['id' => 'emp_id']);
     }
 
-    public function getUsu()
+    public function getUsuario()
     {
         return $this->hasOne(User::className(), ['id' => 'usu_id']);
     }
