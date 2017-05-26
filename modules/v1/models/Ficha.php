@@ -197,7 +197,6 @@ class Ficha extends \yii\db\ActiveRecord
         $notasModulos = array();
         //Cruzar
         foreach ($modulos as $mod) {
-
             $pra = null;
             foreach ($practica as $p) {
                 if($mod->id==$p->mod_id){
@@ -227,15 +226,19 @@ class Ficha extends \yii\db\ActiveRecord
         $total=0;
         //Calcular
         foreach ($this->crossTecnica as $nMod) {
+            $total+=$nMod['modulo']->ponderacion;
             if(!empty($nMod['practica'])){
                 if(!empty($nMod['teorica'])){
-                    $total+=$nMod['modulo']->ponderacion;
                     $sum+=(float)$nMod['modulo']->ponderacion*(($nMod['practica']->nota+$nMod['teorica']->nota)/2);
+                }else{
+                    $sum+=(float)$nMod['modulo']->ponderacion*$nMod['practica']->nota;
+                }
+            }else{
+                if(!empty($nMod['teorica'])){
+                    $sum+=(float)$nMod['modulo']->ponderacion*$nMod['teorica']->nota;
                 }else{
 
                 }
-            }else{
-
             }
         }
         return (float)$sum/$total;
