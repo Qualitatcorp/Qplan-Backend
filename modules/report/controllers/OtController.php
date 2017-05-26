@@ -43,7 +43,7 @@ class OtController extends Controller
                 'mode' => '',
                 'format' => 'Letter',
                 'default_font_size' => 0,
-                'default_font' => '',
+                'default_font' => '10',
                 'margin_left' => 10,
                 'margin_right' => 10,
                 'margin_top' => 10,
@@ -67,31 +67,36 @@ class OtController extends Controller
     public function actionDetalle($id)
     {
          // style='padding-left:44%'
-        $footer = " <div> <p style='width:100px; text-aling:center; margin:0 auto;'>Página {PAGENO}  de {nb} </p></div>";
+        $footer = " <div> <p style='font-size: 9;width:140px; text-aling:center; margin:0 auto;'>OT Nº {$id}  - Página {PAGENO}  de {nb}</p></div>";
         $ot = OrdenTrabajo::findOne($id);
         if($ot){
 
             $style=file_get_contents('http://127.0.0.1/mpdf-bootstrap.min.css');
                     //  $this->renderPartial('_report',array('ot'=>$ot  ),false );
-            $report =$this->renderPartial('detalle/_head',array('ot'=>$ot  ),true);
-            $mpdf = new \Mpdf\Mpdf(array(
+            $head  = $this->renderPartial('detalle/_head',array('ot'=>$ot  ));
+            $lista = $this->renderPartial('detalle/_listado' );
+            $info_tecnico = $this->renderPartial('detalle/_informeTecnico' ,array('ot'=>$ot  ));
+            $mpdf  = new \Mpdf\Mpdf(array(
                 'mode' => '',
                 'format' => 'Letter',
                 'default_font_size' => 0,
-                'default_font' => '',
-                'margin_left' => 0,
-                'margin_right' => 0,
+                'default_font' => '10',
+                'margin_left' => 15,
+                'margin_right' => 10,
                 'margin_top' => 10,
-                'margin_bottom' => 10,
-                'margin_header' => 10,
-                'margin_footer' => 10,
+                'margin_bottom' => 15,
+                'margin_header' => 20,
+                'margin_footer' => 5,
                 'orientation' => 'L'));
-            $mpdf->AddPage('L');
+            $mpdf->SetHTMLFooter($footer);
+            // $mpdf->AddPage('L');
             $mpdf->SetTitle('Orden de Trabajo Nº'. $ot->id);
             $mpdf->SetAuthor('Qualitat');
             $mpdf->WriteHTML($style,1);
-            $mpdf->WriteHTML($report ,2);
-            $mpdf->SetHTMLFooter($footer);
+            // $mpdf->WriteHTML($head ,2);           
+            // $mpdf->WriteHTML($lista ,2);
+            $mpdf->AddPage('');
+            $mpdf->WriteHTML($info_tecnico ,2);
 
             $mpdf->Output();
         }else{

@@ -1,4 +1,4 @@
-<div class="container" style="margin-left: 60px;">
+<div class="container" style="margin-left: -30px;">
 	<div class="row"  >
 		<div class="col-xs-4" >
 			  <table class="table table-striped table-bordered table-condensed" style="font-size: 10px; " > 
@@ -12,7 +12,7 @@
 			  	)); ?>
 			  </table>
 		</div>
-		<div class="col-xs-4">
+		<div class="col-xs-4" >
 			 <table class="table table-striped table-bordered table-condensed" style="font-size: 10px; " >
 			  		<?php echo createHead(array(
 			  			array('nombre' => 'Solicitado Por', 'detalle' => 'x'),
@@ -24,7 +24,7 @@
 			  		)); ?>
 			  </table>
 		</div>
-		<div class="col-xs-2">
+		<div class="col-xs-offset-1 col-xs-2" style="margin-right: 15px">
 			<div class="row">
 				<img   src="<?php echo \Yii::$app->params['url_frontend'].'/img/logo.png'?>" alt="">
 			</div>

@@ -37,7 +37,7 @@ class FichaController extends Controller
                 'default_font_size' => 0,
                 'default_font' => '',
                 'margin_left' => 10,
-                'margin_right' => 10,
+                'margin_right' => 20,
                 'margin_top' => 55,
                 'margin_bottom' => 30,
                 'margin_header' => 5,
@@ -50,7 +50,6 @@ class FichaController extends Controller
             $mpdf->WriteHTML($style,1);
             $mpdf->WriteHTML($report ,2);
             $mpdf->SetHTMLFooter($footer .$num_page );
-            
             $mpdf->Output();
         }else{
            throw new \yii\web\NotFoundHttpException();
