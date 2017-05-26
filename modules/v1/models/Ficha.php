@@ -50,6 +50,7 @@ class Ficha extends \yii\db\ActiveRecord
         'modtercero',
         'avgpractica',
         'avgteorica',
+        'notatecnica',
         'notas',
         'final'
         ];
@@ -185,5 +186,57 @@ class Ficha extends \yii\db\ActiveRecord
         }else{
             return $this->nota;
         }
+    }
+
+    public function getCrossTecnica()
+    {
+        $modulos=$this->ot->perfil->getModulos()->where("FIND_IN_SET('TEORICA',evaluacion)>0 OR FIND_IN_SET('PRACTICA',evaluacion)>0")->All();
+        $practica=$this->ficpracticas;
+        $teorica=$this->ficteoricas;
+        //variables de almacenamiento
+        $notasModulos = array();
+        //Cruzar
+        foreach ($modulos as $mod) {
+            $pra;
+            foreach ($practica as $p) {
+                if($mod->id==$p->mod_id){
+                    $pra=$p;
+                    break;
+                }
+            }
+            $teo;
+            foreach ($teorica as $p) {
+                if($mod->id==$p->mod_id){
+                    $teo=$p;
+                    break;
+                }
+            }
+            $notasModulos[]=[
+                'modulo'=>$mod,
+                'practica'=>$pra,
+                'teorica'=>$teo
+            ];
+        }
+        return $notasModulos;
+    }
+
+    public function getNotatecnica()
+    {
+        $sum=0;
+        $total=0;
+        //Calcular
+        foreach ($this->crossTecnica as $nMod) {
+            if(!empty($nMod['practica'])){
+                if(!empty($nMod['teorica'])){
+                    $total+=$nMod['modulo']->ponderacion;
+                    $sum+=(float)$nMod['modulo']->ponderacion*(($nMod['practica']->nota+$nMod['teorica']->nota)/2);
+                }else{
+
+                }
+            }else{
+
+            }
+        }
+        return (float)$sum/$total;
     }
 }
