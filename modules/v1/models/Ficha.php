@@ -197,14 +197,15 @@ class Ficha extends \yii\db\ActiveRecord
         $notasModulos = array();
         //Cruzar
         foreach ($modulos as $mod) {
-            $pra;
+
+            $pra = null;
             foreach ($practica as $p) {
                 if($mod->id==$p->mod_id){
                     $pra=$p;
                     break;
                 }
             }
-            $teo;
+            $teo = null;
             foreach ($teorica as $p) {
                 if($mod->id==$p->mod_id){
                     $teo=$p;
