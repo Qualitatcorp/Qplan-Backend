@@ -225,7 +225,7 @@ class Ficha extends \yii\db\ActiveRecord
     public function getnotaFinal()
     {
         $sum=0;$total=0;
-        if(empty($this->nota)){
+        if(!empty($this->nota)){
             if(strpos($this->proceso,"TERMINADO")!==false){
                 $sum+=$this->notaTecnica;
                 $total+=1;
