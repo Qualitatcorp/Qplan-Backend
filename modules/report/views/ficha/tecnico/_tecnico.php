@@ -68,8 +68,8 @@ foreach ($ficha->ot->modulos as $key => $value) {
  	 			<!-- tabla ot trabajador -->
  	 				<?php 
  	 				$nombreCompleto = $ficha->trabajador->nombre .' '.$ficha->trabajador->paterno . ' ' . $ficha->trabajador->materno;
- 	 				$date = date_create($ficha->creacion);
- 	 				$date = date_format($date, 'm-d-Y');
+ 	 				 
+ 	 				$date = date_format( date_create($ficha->creacion), 'm-d-Y');
  	 				$arrayTr = array(  
  	 					array('medida'=>150,'nombre'=> 'Orden de Trabajo','contenido' =>  $ficha->ot->id),
  	 					array('medida'=>150,'nombre'=> 'Trabajador','contenido' => $nombreCompleto ),

@@ -29,10 +29,7 @@ class OtController extends Controller
     public function actionListado($id)
     {
        // style='padding-left:44%'
-       $footer = " <div> <p style='width:100px; text-aling:center; margin:0 auto;'>Página {PAGENO}  de {nb} </p></div>";
-
-
-
+        $footer = " <div> <p style='width:100px; text-aling:center; margin:0 auto;'>Página {PAGENO}  de {nb} </p></div>"; 
         $ot = OrdenTrabajo::findOne($id);
         if($ot){
             
@@ -74,7 +71,7 @@ class OtController extends Controller
             $style=file_get_contents('http://127.0.0.1/mpdf-bootstrap.min.css');
                     //  $this->renderPartial('_report',array('ot'=>$ot  ),false );
             $head  = $this->renderPartial('detalle/_head',array('ot'=>$ot  ));
-            $lista = $this->renderPartial('detalle/_listado' );
+            $lista = $this->renderPartial('detalle/_listado',array('ot'=>$ot  ) );
             $info_tecnico = $this->renderPartial('detalle/_informeTecnico' ,array('ot'=>$ot  ));
             $mpdf  = new \Mpdf\Mpdf(array(
                 'mode' => '',
@@ -89,12 +86,12 @@ class OtController extends Controller
                 'margin_footer' => 5,
                 'orientation' => 'L'));
             $mpdf->SetHTMLFooter($footer);
-            // $mpdf->AddPage('L');
+            $mpdf->AddPage('L');
             $mpdf->SetTitle('Orden de Trabajo Nº'. $ot->id);
             $mpdf->SetAuthor('Qualitat');
             $mpdf->WriteHTML($style,1);
             // $mpdf->WriteHTML($head ,2);           
-            // $mpdf->WriteHTML($lista ,2);
+            $mpdf->WriteHTML($lista ,2);
             $mpdf->AddPage('');
             $mpdf->WriteHTML($info_tecnico ,2);
 

@@ -3,11 +3,11 @@
 		<div class="col-xs-4" >
 			  <table class="table table-striped table-bordered table-condensed" style="font-size: 10px; " > 
 			  	<?php echo createHead(array(
-			  			array('nombre' => 'Fecha Solicitud', 'detalle' => 'x'),
-			  			array('nombre' => 'Empresa Usuaria', 'detalle' => 'x'),
-			  			array('nombre' => 'Tipo Personal', 'detalle' => 'x'),
-			  			array('nombre' => 'Dirección', 'detalle' => 'x'),
-			  			array('nombre' => 'Fecha Inicio', 'detalle' => 'x'),
+			  			array('nombre' => 'Fecha Solicitud', 'detalle' => fecha($ot->inicio)),
+			  			array('nombre' => 'Empresa Usuaria', 'detalle' =>  $ot->empresa->nombre),
+			  			array('nombre' => 'Tipo Personal', 'detalle' => $ot->personal),
+			  			array('nombre' => 'Dirección', 'detalle' => $ot->direccion),
+			  			array('nombre' => 'Fecha Inicio', 'detalle' => fecha($ot->inicio)),
 			  			
 			  	)); ?>
 			  </table>
@@ -15,11 +15,11 @@
 		<div class="col-xs-4" >
 			 <table class="table table-striped table-bordered table-condensed" style="font-size: 10px; " >
 			  		<?php echo createHead(array(
-			  			array('nombre' => 'Solicitado Por', 'detalle' => 'x'),
-			  			array('nombre' => 'Empresa Contratista', 'detalle' => 'x'),
-			  			array('nombre' => 'Tipo Certificación', 'detalle' => 'x'),
-			  			array('nombre' => 'Estado Orden', 'detalle' => 'x'),
-			  			array('nombre' => 'Fecha Termino', 'detalle' => 'x'),
+			  			array('nombre' => 'Solicitado Por', 'detalle' => $ot->usuario->nombre . ' ' . $ot->usuario->paterno  . ' ' . $ot->usuario->materno),
+			  			array('nombre' => 'Empresa Contratista', 'detalle' => $ot->mandante->nombre),
+			  			array('nombre' => 'Tipo Certificación', 'detalle' => $ot->tipo),
+			  			array('nombre' => 'Estado Orden', 'detalle' => $ot->estado),
+			  			array('nombre' => 'Fecha Termino', 'detalle' => $ot->termino),
 			  			
 			  		)); ?>
 			  </table>
@@ -52,5 +52,8 @@ function createHead($datos){
 	}
 	return $res;
 	
+}
+function fecha($date){
+	return date_format( date_create($date), 'm-d-Y');
 }
 ?>
