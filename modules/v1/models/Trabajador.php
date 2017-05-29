@@ -90,7 +90,7 @@ class Trabajador extends \yii\db\ActiveRecord
     }
 
     public function extraFields(){
-        return ['ot','ots','comuna','pais','experiencias','ponderacion'];
+        return ['ot','ots','comuna','pais','experiencias','ponderacion','edad'];
     }
 
     public function getFichas()
@@ -107,6 +107,7 @@ class Trabajador extends \yii\db\ActiveRecord
     {
         return $this->hasMany(OrdenTrabajo::className(), ['id' => 'ot_id'])->viaTable('orden_trabajo_trabajador', ['tra_id' => 'id']);
     }
+
 
     public function getComuna()
     {
@@ -167,5 +168,12 @@ class Trabajador extends \yii\db\ActiveRecord
     public function getMeses()
     {
         return $this->getExperiencias()->sum('meses');
+    }
+    public function getEdad()
+    {
+        $date2 = date('Y-m-d');
+        $diff = abs(strtotime($date2) - strtotime($this->nacimiento));
+        $years = floor($diff / (365*60*60*24));
+        return $years;
     }
 }
