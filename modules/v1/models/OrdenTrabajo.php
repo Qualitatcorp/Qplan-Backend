@@ -137,17 +137,9 @@ class OrdenTrabajo extends \yii\db\ActiveRecord
         $list = array();
         $fichas=$this->fichas;
         foreach ($fichas as $model) {
-            $list[]=$model->getAttributes(['id','tra_id','proceso','creacion','final','notas']) ;
+            $list[]=$model->getAttributes(['id','tra_id','proceso','creacion','nota','notas']) ;
         }
         return $list;
     }
 
-    public function getFinal()
-    {
-        if(empty($this->nota)){
-
-        }else{
-            return $this->nota;
-        }
-    }
 }

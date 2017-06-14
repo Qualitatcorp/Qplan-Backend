@@ -222,7 +222,7 @@ class Ficha extends \yii\db\ActiveRecord
         return (float)$sum/$total;
     }
 
-    public function getnotaFinal()
+    public function getnNotaFinal()
     {
         $sum=0;$total=0;
         if(empty($this->nota)){
