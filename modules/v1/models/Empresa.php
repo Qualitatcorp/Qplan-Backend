@@ -72,11 +72,12 @@ class Empresa extends \yii\db\ActiveRecord
         ];
     }
 
-    public function extraFields(){
-        return ['sucursal'];
+    public function extraFields()
+    {
+        return ['sucursal','pais','comuna'];
     }
 
-    public function getCom()
+    public function getComuna()
     {
         return $this->hasOne(Comuna::className(), ['com_id' => 'com_id']);
     }
