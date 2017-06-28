@@ -18,7 +18,7 @@ class Trabajador extends \yii\db\ActiveRecord
             [['rut'], 'required'],
             [['nacimiento', 'creacion', 'modificacion'], 'safe'],
             [['civil', 'licencia', 'talla', 'direccion', 'afp', 'prevision', 'nivel','sexo'], 'string'],
-            [['rut'], 'string', 'max' => 12],
+            [['rut'], 'string', 'max' => 64],
             [['nombre', 'paterno', 'materno'], 'string', 'max' => 64],
             [['fono'], 'string', 'max' => 36],
             [['mail', 'gerencia'], 'string', 'max' => 128],
