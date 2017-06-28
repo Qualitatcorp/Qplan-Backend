@@ -1,30 +1,22 @@
 <?php
 
 namespace app\modules\report\controllers;
+use yii\web\Controller;
 use app\modules\v1\models\OrdenTrabajo;
 
-use yii\web\Controller;
-
-/**
- * Default controller for the `report` module
- */
 class OtController extends Controller
 {
-    /**
-     * Renders the index view for the module
-     * @return string
-     */
-    // public function behaviors()
-    // {
-    //     return \yii\helpers\ArrayHelper::merge(parent::behaviors(),[
-    //         'authenticator'=>[
-    //             'class' => \yii\filters\auth\HttpBearerAuth::className()  
-    //         ],
-    //         'authorization'=>[
-    //             'class' => \app\components\Authorization::className(),
-    //         ],
-    //     ]);
-    // }
+    public function behaviors()
+    {
+        return \yii\helpers\ArrayHelper::merge(parent::behaviors(),[
+            'authenticator'=>[
+                'class' => \yii\filters\auth\HttpBearerAuth::className()  
+            ],
+            'authorization'=>[
+                'class' => \app\components\Authorization::className(),
+            ],
+        ]);
+    }
    
     public function actionListado($id)
     {
@@ -32,8 +24,7 @@ class OtController extends Controller
         $footer = " <div> <p style='width:100px; text-aling:center; margin:0 auto;'>Página {PAGENO}  de {nb} </p></div>"; 
         $ot = OrdenTrabajo::findOne($id);
         if($ot){
-            
-            $style=file_get_contents('http://127.0.0.1/mpdf-bootstrap.min.css');
+            $style=file_get_contents(\Yii::getAlias('@webroot').DIRECTORY_SEPARATOR.'css/mpdf-bootstrap.min.css');
             //  $this->renderPartial('_report',array('ot'=>$ot  ),false );
             $report =$this->renderPartial('listado/_report',array('ot'=>$ot  ),true);
             $mpdf = new \Mpdf\Mpdf(array(
@@ -59,7 +50,6 @@ class OtController extends Controller
            throw new \yii\web\NotFoundHttpException();
            
         }
-       
     }
     public function actionDetalle($id)
     {
@@ -68,7 +58,7 @@ class OtController extends Controller
         $ot = OrdenTrabajo::findOne($id);
         if($ot){
 
-            $style=file_get_contents('http://127.0.0.1/mpdf-bootstrap.min.css');
+            $style=file_get_contents(\Yii::getAlias('@webroot').DIRECTORY_SEPARATOR.'css/mpdf-bootstrap.min.css');
                     //  $this->renderPartial('_report',array('ot'=>$ot  ),false );
             $head  = $this->renderPartial('detalle/_head',array('ot'=>$ot  ));
             $lista = $this->renderPartial('detalle/_listado',array('ot'=>$ot  ) );
@@ -97,10 +87,9 @@ class OtController extends Controller
 
             $mpdf->Output();
         }else{
-         throw new \yii\web\NotFoundHttpException();
-
-     }
- }
+            throw new \yii\web\NotFoundHttpException();
+        }
+    }
     private function pre($s){
        echo "<pre>";
        print_r($s);

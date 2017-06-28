@@ -1,33 +1,29 @@
 <?php
 
 namespace app\modules\report\controllers;
-  
-use app\modules\v1\models\Ficha;
 use yii\web\Controller;
+use app\modules\v1\models\Ficha;
+  
 class FichaController extends Controller
 {
-    /**
-     * Renders the index view for the module
-     * @return string
-     */
-    // public function behaviors()
-    // {
-    //     return \yii\helpers\ArrayHelper::merge(parent::behaviors(),[
-    //         'authenticator'=>[
-    //             'class' => \yii\filters\auth\HttpBearerAuth::className()  
-    //         ],
-    //         'authorization'=>[
-    //             'class' => \app\components\Authorization::className(),
-    //         ],
-    //     ]);
-    // }
+    public function behaviors()
+    {
+        return \yii\helpers\ArrayHelper::merge(parent::behaviors(),[
+            'authenticator'=>[
+                'class' => \yii\filters\auth\HttpBearerAuth::className()  
+            ],
+            'authorization'=>[
+                'class' => \app\components\Authorization::className(),
+            ],
+        ]);
+    }
    
     public function actionPractica($id)
     {
         $num_page = " <div> <p style='width:100px; text-aling:center; margin:0 auto;'>Página {PAGENO}  de {nb} </p></div>";
         $ficha = Ficha::findOne($id);   
         if($ficha){
-            $style=file_get_contents('http://127.0.0.1/mpdf-bootstrap.min.css');
+            $style=file_get_contents(\Yii::getAlias('@webroot').DIRECTORY_SEPARATOR.'css/mpdf-bootstrap.min.css');
             $report = $this->renderPartial('practica/_practica',array('ficha'=>$ficha),true);
             $header = $this->renderPartial('practica/_headerpractica',array('ficha'=>$ficha),true);
             $footer = $this->renderPartial('practica/_firmaPractica');
@@ -54,16 +50,16 @@ class FichaController extends Controller
         }else{
            throw new \yii\web\NotFoundHttpException();
            
-        }
-       
+        }   
     }
+
     public function actionTecnico($id)
     {
           
         $ficha = Ficha::findOne($id);
         if($ficha){
             $num_page = " <div> <p style='width:100px; text-aling:center; margin:0 auto;'>Página {PAGENO} de {nb} </p></div>";
-            $style=file_get_contents('http://127.0.0.1/mpdf-bootstrap.min.css');
+            $style=file_get_contents(\Yii::getAlias('@webroot').DIRECTORY_SEPARATOR.'css/mpdf-bootstrap.min.css');f
             $header = $this->renderPartial('tecnico/_header');
             $body = $this->renderPartial('tecnico/_tecnico',array('ficha'=>$ficha),true);
             $mpdf = new \Mpdf\Mpdf(array(
@@ -88,8 +84,8 @@ class FichaController extends Controller
             $mpdf->WriteHTML($body ,2);
             $mpdf->SetHTMLFooter($num_page );
             $mpdf->Output();
-    }
+        }
 
-}
+    }
  
 }

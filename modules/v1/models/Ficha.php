@@ -50,9 +50,11 @@ class Ficha extends \yii\db\ActiveRecord
         'modtercero',
         'avgpractica',
         'avgteorica',
-        'notatecnica',
-        'notas',
-        'final'
+        'notaTecnica',
+        'notaCurricular',
+        'notasTercera',
+        'notaFinal',
+        'notas'
         ];
     }
 
@@ -120,13 +122,9 @@ class Ficha extends \yii\db\ActiveRecord
     public function getNotas()
     {
         $list=[];
-        $nota=$this->avgpractica;
+        $nota=$this->notatecnica;
         if(!empty($nota)){
-            $list['practica']=(float)$nota;
-        }
-        $nota=$this->avgteorica;
-        if(!empty($nota)){
-            $list['teorica']=(float)$nota;
+            $list['tecnica']=(float)$nota;
         }
         $nota=$this->ficcurricular;
         if(!empty($nota)){
@@ -154,38 +152,6 @@ class Ficha extends \yii\db\ActiveRecord
             }
         }
         return $list;
-    }
-
-    public function getFinal()
-    {
-        if(empty($this->nota)){
-            if(strpos($this->proceso,"TERMINADO")!==false){
-                $valores=array();
-                // \Underscore\Types\Arrays::
-
-                $notas=$this->notas;
-                foreach ($notas as $n) {
-                    if(is_numeric($n)){
-                        $valores[]=$n;
-                    }else{
-                        if(is_array($n)){
-                            foreach ($n as $key => $value) {
-                                $valores[]=$value;
-                            }
-                        }
-                    }
-                }
-                $sum=\Underscore\Types\Arrays::sum($valores);
-                $this->nota=(float)$sum/count($valores);
-                $this->save();
-                return $this->nota;
-                
-            }else{
-
-            }
-        }else{
-            return $this->nota;
-        }
     }
 
     public function getCrossTecnica()
@@ -220,10 +186,22 @@ class Ficha extends \yii\db\ActiveRecord
         return $notasModulos;
     }
 
-    public function getNotatecnica()
+    public function getNotaCurricular()
     {
-        $sum=0;
-        $total=0;
+        $nota=$this->ficcurricular;
+        if(!empty($nota)){
+            return (float)$nota->nota;
+        }else{
+            $p=$this->trabajador->ponderacion;
+            if(!empty($p)){
+                return (float)$p;
+            }
+        }
+    }
+
+    public function getNotaTecnica()
+    {
+        $sum=0;$total=0;
         //Calcular
         foreach ($this->crossTecnica as $nMod) {
             $total+=$nMod['modulo']->ponderacion;
@@ -237,10 +215,54 @@ class Ficha extends \yii\db\ActiveRecord
                 if(!empty($nMod['teorica'])){
                     $sum+=(float)$nMod['modulo']->ponderacion*$nMod['teorica']->nota;
                 }else{
-
+                    return;
                 }
             }
         }
         return (float)$sum/$total;
+    }
+
+    public function getnNotaFinal()
+    {
+        $sum=0;$total=0;
+        if(empty($this->nota)){
+            if(strpos($this->proceso,"TERMINADO")!==false){
+                $sum+=$this->notaTecnica;
+                $total+=1;
+                $fCur=$this->ficcurricular;
+                if(!empty($fCur)){
+                    $sum+=$fCur->ponderacion*$fCur->nota;
+                    $total+=$fCur->ponderacion;
+                }else{
+                    $sum+=$this->notaCurricular;
+                    $total+=1;
+                }
+                foreach ($this->crossTercera as $cTer) {
+                    $sum+=(float)$cTer['modulo']['ponderacion']*(float)$cTer['nota'];
+                    $total+=(float)$cTer['modulo']['ponderacion'];
+                }
+                $this->nota=(float)$sum/$total;
+                $this->save();
+                return (float)$this->nota;
+            }else{
+                return "PROCESO NO TERMINADO";
+            }
+        }else{
+            return  (float)$this->nota;
+        }
+    }
+
+    public function getCrossTercera()
+    {
+        return $this->getFictercero()->with('modulo')->asArray()->All();
+    }
+
+    public function getNotasTercera()
+    {
+        $list=[];
+        foreach ($this->crossTercera as $cTer) {
+            $list[$cTer['modulo']['nombre']]=(float)$cTer['nota'];
+        }
+        return $list;
     }
 }
